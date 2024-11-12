@@ -56,14 +56,14 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 					Thread.sleep(500);
 					if (array[j] < array[minIndex]) {
 						if (minIndex != i) {
-							labels[minIndex].setBackground(Color.CYAN);
+							labels[minIndex].setBackground(originalColor);
 						}
 						minIndex = j;
 						labels[minIndex].setBackground(Color.ORANGE);
 						minLabel.setText("Min: " + String.valueOf(array[minIndex]));
 						minLabel.setVisible(true);
 					} else {
-						labels[j].setBackground(Color.CYAN);
+						labels[j].setBackground(originalColor);
 					}
 
 					Thread.sleep(DELAY);
@@ -76,7 +76,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 					minLabel.setText("arr[" + i + "]: " + array[i]);
 					minLabel.setForeground(Color.RED);
 					Thread.sleep(500);
-					labels[minIndex].setBackground(Color.CYAN);
+					labels[minIndex].setBackground(originalColor);
 					minLabel.setForeground(Color.WHITE);
 
 				}

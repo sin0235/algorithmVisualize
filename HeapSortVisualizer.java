@@ -2,7 +2,6 @@ package algorithmVisualize;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class HeapSortVisualizer extends JFrame {
 	private JPanel treePanel;
@@ -13,37 +12,51 @@ public class HeapSortVisualizer extends JFrame {
 	private int arraySize;
 
 	public HeapSortVisualizer() {
-		setTitle("Algorithm Visualizer Application");
-		setSize(900, 700);
+		setTitle("Heap Sort Visualizer");
+		setSize(1000, 700);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(10, 10));
 
-		JPanel controlPanel = new JPanel();
+		// Control Panel with Styling
+		JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+		controlPanel.setBorder(BorderFactory.createTitledBorder("Input Data"));
+
 		inputField = new JTextField(20);
 		JButton startButton = new JButton("Start");
 
-		controlPanel.add(new JLabel("Nhập dữ liệu đầu vào (Phân cách bởi dấu phẩy): "));
+		JLabel inputLabel = new JLabel("Nhập dữ liệu đầu vào (Phân cách bởi dấu phẩy): ");
+		inputLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		controlPanel.add(inputLabel);
 		controlPanel.add(inputField);
 		controlPanel.add(startButton);
 
 		add(controlPanel, BorderLayout.NORTH);
 
-		logArea = new JTextArea(5, 40);
-		logArea.setEditable(false);
-		JScrollPane logScroll = new JScrollPane(logArea);
-		add(logScroll, BorderLayout.SOUTH);
-
+		// Tree Panel with Border
 		treePanel = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				if (array != null) {
-					drawTree(g, 0, getWidth() / 2, 50, getWidth() / 4);
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					drawTree(g2, 0, getWidth() / 2, 50, getWidth() / 4);
 				}
 			}
 		};
+		treePanel.setBorder(BorderFactory.createTitledBorder("Heap Tree Visualization"));
+		treePanel.setBackground(new Color(250, 250, 255));
 		treePanel.setPreferredSize(new Dimension(800, 500));
 		add(treePanel, BorderLayout.CENTER);
+
+		// Log Area with Styling
+		logArea = new JTextArea(6, 40);
+		logArea.setEditable(false);
+		logArea.setFont(new Font("Roboto", Font.PLAIN, 14));
+		logArea.setBackground(new Color(245, 245, 245));
+		logArea.setBorder(BorderFactory.createTitledBorder("Execution Log"));
+		JScrollPane logScroll = new JScrollPane(logArea);
+		add(logScroll, BorderLayout.SOUTH);
 
 		startButton.addActionListener(e -> onStart());
 
@@ -75,17 +88,16 @@ public class HeapSortVisualizer extends JFrame {
 	}
 
 	private void initializeArrayLabels() {
-		JPanel arrayPanel = new JPanel();
-		arrayPanel.setLayout(new FlowLayout());
+		JPanel arrayPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+		arrayPanel.setBorder(BorderFactory.createTitledBorder("Array Representation"));
 		labels = new JLabel[array.length];
 		for (int i = 0; i < array.length; i++) {
-
 			labels[i] = new JLabel(String.valueOf(array[i]));
 			labels[i].setFont(new Font("Roboto", Font.BOLD, 18));
-			labels[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
-			labels[i].setPreferredSize(new Dimension(40, 40));
+			labels[i].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+			labels[i].setPreferredSize(new Dimension(50, 50));
 			labels[i].setOpaque(true);
-			labels[i].setBackground(Color.CYAN);
+			labels[i].setBackground(Color.LIGHT_GRAY);
 			labels[i].setHorizontalAlignment(SwingConstants.CENTER);
 			arrayPanel.add(labels[i]);
 		}
@@ -94,16 +106,14 @@ public class HeapSortVisualizer extends JFrame {
 		repaint();
 	}
 
-	private void drawTree(Graphics g, int index, int x, int y, int xOffset) {
-		if (index >= arraySize)
-			return;
+	private void drawTree(Graphics2D g, int index, int x, int y, int xOffset) {
+		if (index >= arraySize) return;
 
 		g.setColor(Color.ORANGE);
 		g.fillOval(x - 25, y - 25, 50, 50);
 		g.setColor(Color.BLACK);
 		g.drawOval(x - 25, y - 25, 50, 50);
 
-		// Set font to Roboto, bold, size 20
 		g.setFont(new Font("Roboto", Font.BOLD, 20));
 		String text = String.valueOf(array[index]);
 		FontMetrics fm = g.getFontMetrics();
@@ -121,13 +131,11 @@ public class HeapSortVisualizer extends JFrame {
 		}
 	}
 
-	// HeapSort algorithm
 	private void heapSort() {
-		long startTime = System.currentTimeMillis();
 		buildMaxHeap();
 		for (int i = array.length - 1; i > 0; i--) {
 			swap(0, i);
-			arraySize--; // Reduce the size of the heap
+			arraySize--;
 			heapify(0);
 			treePanel.repaint();
 			updateArrayLabels();
@@ -135,8 +143,6 @@ public class HeapSortVisualizer extends JFrame {
 			labels[i].setBackground(Color.GREEN);
 		}
 		labels[0].setBackground(Color.GREEN);
-		long endTime = System.currentTimeMillis();
-		logArea.append("Thuật toán kết thúc sau " + (endTime - startTime) + " ms\n");
 	}
 
 	private void buildMaxHeap() {
@@ -154,13 +160,8 @@ public class HeapSortVisualizer extends JFrame {
 		int left = 2 * i + 1;
 		int right = 2 * i + 2;
 
-		if (left < arraySize && array[left] > array[largest]) {
-			largest = left;
-		}
-
-		if (right < arraySize && array[right] > array[largest]) {
-			largest = right;
-		}
+		if (left < arraySize && array[left] > array[largest]) largest = left;
+		if (right < arraySize && array[right] > array[largest]) largest = right;
 
 		if (largest != i) {
 			swap(i, largest);
@@ -180,14 +181,10 @@ public class HeapSortVisualizer extends JFrame {
 
 		labels[i].setBackground(Color.RED);
 		labels[j].setBackground(Color.RED);
-
-		treePanel.revalidate();
 		treePanel.repaint();
-
 		delay();
 		labels[i].setBackground(Color.CYAN);
 		labels[j].setBackground(Color.CYAN);
-
 	}
 
 	private void updateArrayLabels() {

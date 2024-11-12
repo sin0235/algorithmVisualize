@@ -59,8 +59,8 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 						labels[k].setForeground(Color.WHITE);
 					}
 
-					labels[j].setBackground(Color.CYAN);
-					labels[j + 1].setBackground(Color.CYAN);
+					labels[j].setBackground(originalColor);
+					labels[j + 1].setBackground(originalColor);
 
 				}
 
@@ -83,8 +83,8 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 						labels[k].setForeground(Color.WHITE);
 
 					}
-					labels[i].setBackground(Color.CYAN);
-					labels[i - 1].setBackground(Color.CYAN);
+					labels[i].setBackground(originalColor);
+					labels[i - 1].setBackground(originalColor);
 				}
 
 				for (int l = k - 1; l >= left; l--) {

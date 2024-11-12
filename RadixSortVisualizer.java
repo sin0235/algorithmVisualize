@@ -17,6 +17,7 @@ public class RadixSortVisualizer extends JFrame {
 	private JLabel[] labels;
 	private Queue<Integer>[] queues = new Queue[10];
 	private final int DELAY = 500;
+	public Color originalColor = new Color(175, 238, 238);
 
 	public RadixSortVisualizer() {
 		setTitle("Algorithm Visualizer Application");
@@ -89,7 +90,7 @@ public class RadixSortVisualizer extends JFrame {
 	private JLabel createLabel(int value) {
 		JLabel label = new JLabel(String.valueOf(value));
 		label.setOpaque(true);
-		label.setBackground(Color.CYAN);
+		label.setBackground(originalColor);
 		label.setPreferredSize(new Dimension(60, 50));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Roboto", Font.BOLD, 14));

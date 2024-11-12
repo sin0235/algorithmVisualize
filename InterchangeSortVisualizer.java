@@ -44,10 +44,10 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 						swap(i, j);
 					}
 					labels[i].setBackground(Color.YELLOW);
-					labels[j].setBackground(Color.CYAN);
+					labels[j].setBackground(originalColor);
 					Thread.sleep(DELAY);
 				}
-				labels[i].setBackground(Color.CYAN);
+				labels[i].setBackground(originalColor);
 
 				labels[i].setBackground(Color.GREEN);
 			}

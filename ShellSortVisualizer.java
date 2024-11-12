@@ -81,7 +81,7 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 
 						Thread.sleep(DELAY);
 						compareLabel.setForeground(Color.WHITE);
-						labels[k].setBackground(Color.CYAN);
+						labels[k].setBackground(originalColor);
 						k -= gap;
 					}
 
@@ -90,7 +90,7 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 					labels[k].setBackground(Color.BLUE);
 					logArea.append("Chèn thành công " + value + " vào vị trí index " + k + "\n");
 					Thread.sleep(DELAY);
-					labels[k].setBackground(Color.CYAN);
+					labels[k].setBackground(originalColor);
 				}
 			}
 

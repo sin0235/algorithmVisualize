@@ -46,8 +46,8 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
 					labels[j].setBackground(Color.WHITE);// Color shift to indicate swap
 					labels[j].setText("");
 					Thread.sleep(DELAY + 100);
-					labels[j + 1].setBackground(Color.CYAN);
-					labels[j].setBackground(Color.CYAN);
+					labels[j + 1].setBackground(originalColor);
+					labels[j].setBackground(originalColor);
 					j = j - 1;
 				}
 
@@ -57,7 +57,7 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
 
 				Thread.sleep(DELAY);
 
-				labels[i].setBackground(Color.CYAN);
+				labels[i].setBackground(originalColor);
 			}
 			for (JLabel label : labels) {
 				label.setBackground(Color.GREEN);

@@ -58,7 +58,7 @@ public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
 						right = mid - 1;
 					}
 
-					labels[mid].setBackground(Color.CYAN);
+					labels[mid].setBackground(originalColor);
 				}
 				logArea.append("Left: " + left + "\n");
 				labels[left].setBackground(Color.GRAY);
@@ -70,15 +70,15 @@ public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
 					labels[j].setBackground(Color.WHITE);// Color shift to indicate swap
 					labels[j].setText("");
 					Thread.sleep(DELAY);
-					labels[j + 1].setBackground(Color.CYAN);
-					labels[j].setBackground(Color.CYAN);
+					labels[j + 1].setBackground(originalColor);
+					labels[j].setBackground(originalColor);
 				}
 
 				array[left] = temp;
 				logArea.append("Chèn thành công " + temp + " vào vị trí index " + left + "\n");
 				labels[left].setText(String.valueOf(temp));
 				Thread.sleep(DELAY + 100);
-				labels[left].setBackground(Color.CYAN);
+				labels[left].setBackground(originalColor);
 			}
 
 			// Mark all elements as sorted at the end

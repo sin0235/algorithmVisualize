@@ -35,7 +35,9 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 				for (int j = 0; j < array.length - i - 1; j++) {
 					highlightLine(2);
 
-					setLabelColor(j, j + 1);
+					labels[j].setBackground(Color.YELLOW);
+					labels[j + 1].setBackground(Color.YELLOW);
+
 					Thread.sleep(DELAY);
 					if (array[j] > array[j + 1]) {
 						highlightLine(3);
@@ -43,7 +45,7 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 						swap(j, j + 1);
 					}
 
-					resetLabelColor(j, j + 1, Color.CYAN);
+					resetLabelColor(j, j + 1);
 					Thread.sleep(DELAY);
 				}
 				labels[array.length - i - 1].setBackground(Color.GREEN);
