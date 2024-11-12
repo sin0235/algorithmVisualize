@@ -1,0 +1,77 @@
+package algorithmVisualize;
+
+import java.awt.Color;
+
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+
+public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
+	public InsertionSortVisualizer() {
+		super();
+	}
+
+	@Override
+	public String getCode() {
+		return """
+				for (int i = 1; i < array.length; i++) {
+				    int key = array[i];
+				    int j = i - 1;
+				    while (j >= 0 && array[j] > key) {
+				        array[j + 1] = array[j];
+				        j = j - 1;
+				    }
+				    array[j + 1] = key;
+				}
+				""";
+	}
+
+	@Override
+	public void visualize() {
+		int len = array.length;
+
+		try {
+			Thread.sleep(DELAY);
+			long startTime = System.currentTimeMillis();
+
+			for (int i = 1; i < len; i++) {
+				int tmp = array[i];
+				int j = i - 1;
+
+				labels[i].setBackground(Color.WHITE);
+				while (j >= 0 && array[j] > tmp) {
+					logArea.append("Dời " + array[j] + " từ index " + j + " sang index " + (j + 1) + "\n");
+					array[j + 1] = array[j];
+					labels[j + 1].setText(String.valueOf(array[j]));
+					labels[j + 1].setBackground(Color.RED);
+					labels[j].setBackground(Color.WHITE);// Color shift to indicate swap
+					labels[j].setText("");
+					Thread.sleep(DELAY + 100);
+					labels[j + 1].setBackground(Color.CYAN);
+					labels[j].setBackground(Color.CYAN);
+					j = j - 1;
+				}
+
+				logArea.append("Chèn thành công " + tmp + " vào vị trí index " + (j + 1) + "\n");
+				array[j + 1] = tmp;
+				labels[j + 1].setText(String.valueOf(tmp));
+
+				Thread.sleep(DELAY);
+
+				labels[i].setBackground(Color.CYAN);
+			}
+			for (JLabel label : labels) {
+				label.setBackground(Color.GREEN);
+			}
+			long endTime = System.currentTimeMillis();
+			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void excute() {
+		SwingUtilities.invokeLater(() -> new InsertionSortVisualizer().setVisible(true));
+	}
+
+}
