@@ -1,77 +1,126 @@
 package algorithmVisualize;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.*;
 
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import static java.lang.Thread.sleep;
 
+@SuppressWarnings("ALL")
 public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
-	public InsertionSortVisualizer() {
-		super();
-	}
 
-	@Override
-	public String getCode() {
-		return """
-				for (int i = 1; i < array.length; i++) {
-				    int key = array[i];
-				    int j = i - 1;
-				    while (j >= 0 && array[j] > key) {
-				        array[j + 1] = array[j];
-				        j = j - 1;
-				    }
-				    array[j + 1] = key;
-				}
-				""";
-	}
+    public InsertionSortVisualizer() {
+        super();
+    }
 
-	@Override
-	public void visualize() {
-		int len = array.length;
+    @Override
+    public String getCode() {
+        return """
+                for (int i = 1; i < array.length; i++) {
+                    int key = array[i];
+                    int j = i - 1;
+                    while (j >= 0 && array[j] > key) {
+                        array[j + 1] = array[j];
+                        j = j - 1;
+                    }
+                    array[j + 1] = key;
+                }
+                """;
+    }
 
-		try {
-			Thread.sleep(DELAY);
-			long startTime = System.currentTimeMillis();
+    @Override
+    public void visualize() {
+        int len = array.length;
 
-			for (int i = 1; i < len; i++) {
-				int tmp = array[i];
-				int j = i - 1;
+        try {
+            long startTime = System.currentTimeMillis();
 
-				labels[i].setBackground(Color.WHITE);
-				while (j >= 0 && array[j] > tmp) {
-					logArea.append("Dời " + array[j] + " từ index " + j + " sang index " + (j + 1) + "\n");
-					array[j + 1] = array[j];
-					labels[j + 1].setText(String.valueOf(array[j]));
-					labels[j + 1].setBackground(Color.RED);
-					labels[j].setBackground(Color.WHITE);// Color shift to indicate swap
-					labels[j].setText("");
-					Thread.sleep(DELAY + 100);
-					labels[j + 1].setBackground(originalColor);
-					labels[j].setBackground(originalColor);
-					j = j - 1;
-				}
+            for (int i = 1; i < len; i++) {
+                int tmp = array[i];
+                int j = i - 1;
 
-				logArea.append("Chèn thành công " + tmp + " vào vị trí index " + (j + 1) + "\n");
-				array[j + 1] = tmp;
-				labels[j + 1].setText(String.valueOf(tmp));
+                JLabel tempLabel = new JLabel(String.valueOf(tmp));
+                tempLabel.setFont(new Font("Roboto", Font.BOLD, 18));
+                tempLabel.setOpaque(true);
+                tempLabel.setBackground(Color.YELLOW);
+                tempLabel.setForeground(Color.RED);
+                tempLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                tempLabel.setPreferredSize(new Dimension(50, 50));
 
-				Thread.sleep(DELAY);
+                panel.add(tempLabel);
+                panel.setComponentZOrder(tempLabel, 0);
+                tempLabel.setLocation(labels[i].getLocation());
+                labels[i].setText("");
+				delay();
+                panel.revalidate();
+                panel.repaint();
 
-				labels[i].setBackground(originalColor);
-			}
-			for (JLabel label : labels) {
-				label.setBackground(Color.GREEN);
-			}
-			long endTime = System.currentTimeMillis();
-			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
 
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+                while (j >= 0 && array[j] > tmp) {
+                    logArea.append("Dời " + array[j] + " từ index " + j + " sang index " + (j + 1) + "\n");
 
-	public static void excute() {
-		SwingUtilities.invokeLater(() -> new InsertionSortVisualizer().setVisible(true));
-	}
 
+                    animateShift(labels[j], labels[j + 1].getX(), labels[j + 1].getY());
+
+                    array[j + 1] = array[j];
+
+                    labels[j + 1].setText(String.valueOf(array[j]));
+                    labels[j].setText("");
+                    sleep(200);
+                    j--;
+                }
+
+
+                array[j + 1] = tmp;
+                logArea.append("Chèn thành công " + tmp + " vào vị trí index " + (j + 1) + "\n");
+
+                animateShift(tempLabel, labels[j + 1].getX(), labels[j + 1].getY());
+				sleep(700);
+                labels[j + 1].setText(String.valueOf(tmp));
+                tempLabel.setVisible(false);
+                panel.remove(tempLabel);
+                labels[j + 1].setBackground(Color.ORANGE);
+
+                tempLabel.setText("");
+                panel.revalidate();
+                panel.repaint();
+
+                labels[j + 1].setBackground(originalColor);
+
+            }
+
+            for (JLabel label : labels) {
+                label.setBackground(Color.GREEN);
+            }
+
+            long endTime = System.currentTimeMillis();
+            logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void animateShift(JLabel label, int targetX, int targetY) {
+        int startX = label.getX();
+        int startY = label.getY();
+
+        for (int step = 0; step <= 10; step++) {
+            final int x = startX + (int) ((targetX - startX) * (step / 10.0));
+            final int y = startY + (int) ((targetY - startY) * (step / 10.0));
+            SwingUtilities.invokeLater(() -> label.setLocation(x, y));
+
+            try {
+                sleep(130);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        label.setLocation(targetX, targetY);
+    }
+
+    public static void excute() {
+        SwingUtilities.invokeLater(() -> new InsertionSortVisualizer().setVisible(true));
+    }
 }
