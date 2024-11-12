@@ -102,7 +102,24 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 			e.printStackTrace();
 		}
 	}
+	@Override
+	protected void swap(int i, int j) {
+		int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 
+		String tempText = labels[i].getText();
+		labels[i].setText(labels[j].getText());
+		labels[j].setText(tempText);
+
+		labels[i].setBackground(Color.ORANGE);
+		labels[j].setBackground(Color.ORANGE);
+
+		panel.revalidate();
+		panel.repaint();
+
+		delay();
+	}
 	public static void excute() {
 		SwingUtilities.invokeLater(() -> new ShakeSortVisualizer().setVisible(true));
 	}

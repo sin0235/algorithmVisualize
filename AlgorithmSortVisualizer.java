@@ -129,6 +129,7 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 		int endY = labels[j].getLocation().y;
 		Dimension originalSize = labels[i].getSize();
 
+
 		int maxScale = 10;
 
 		for (int step = 0; step <= steps; step++) {
@@ -162,9 +163,9 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 		labels[j].setSize(originalSize);
 		labels[i].setBackground(originalColor);
 		labels[j].setBackground(originalColor);
-
 		panel.revalidate();
 		panel.repaint();
+
 	}
 
 
