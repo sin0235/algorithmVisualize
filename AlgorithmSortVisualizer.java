@@ -1,22 +1,8 @@
 package algorithmVisualize;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public abstract class AlgorithmSortVisualizer extends JFrame {
 	protected JPanel panel;
@@ -27,30 +13,37 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 	protected int[] array;
 	protected JLabel[] labels;
 	public int DELAY = 500;
+	public Color originalColor = new Color(175, 238, 238);
 
 	public AlgorithmSortVisualizer() {
 		setTitle("Algorithm Visualizer Application");
-		setSize(900, 600);
+		setSize(1000, 650);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
+		getContentPane().setBackground(new Color(245, 245, 245));
 
-		JPanel inputPanel = new JPanel();
-		inputField = new JTextField(30);
-		startButton = new JButton("Start");
-		inputPanel.add(new JLabel("Nhập dữ liệu đầu vào(Phân cách bởi dấu phẩy): "));
+		JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 15));
+		inputPanel.setBackground(new Color(240, 240, 240));
+
+		JLabel inputLabel = new JLabel("Nhập dữ liệu đầu vào (cách nhau bởi dấu phẩy): ");
+		inputLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		inputField = createStyledTextField(30);
+
+		startButton = createStyledButton("Start");
+
+		inputPanel.add(inputLabel);
 		inputPanel.add(inputField);
 		inputPanel.add(startButton);
 		add(inputPanel, BorderLayout.NORTH);
 
-		panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 50));
+		panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 30));
+		panel.setBackground(Color.WHITE);
 		add(panel, BorderLayout.CENTER);
 
-		JPanel infoPanel = new JPanel(new GridLayout(1, 2));
-		codeArea = new JTextArea(10, 30);
-		logArea = new JTextArea(10, 30);
-
-		codeArea.setEditable(false);
-		logArea.setEditable(false);
+		JPanel infoPanel = new JPanel(new GridLayout(1, 2, 15, 0));
+		infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		codeArea = createTextArea("Code Area", Color.LIGHT_GRAY);
+		logArea = createTextArea("Log Area", Color.WHITE);
 
 		JScrollPane codeScroll = new JScrollPane(codeArea);
 		JScrollPane logScroll = new JScrollPane(logArea);
@@ -61,42 +54,49 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 
 		codeArea.setText(getCode());
 
-		startButton.addActionListener(e -> {
-			String input = inputField.getText();
-			String[] numbers = input.split(",");
-			array = new int[numbers.length];
-			labels = new JLabel[numbers.length];
+		startButton.addActionListener(e -> onSearchAction());
+	}
 
-			try {
-				panel.removeAll();
-				for (int i = 0; i < numbers.length; i++) {
-					array[i] = Integer.parseInt(numbers[i].trim());
-					labels[i] = createLabel(array[i]);
-					panel.add(labels[i]);
-				}
-				panel.revalidate();
-				panel.repaint();
-				logArea.setText("");
-				new Thread(this::visualize).start();
-			} catch (NumberFormatException ex) {
-				JOptionPane.showMessageDialog(null, "Lỗi dữ liệu, vui lòng chỉ nhập số và phân cách bới dấu phẩy");
-			}
-		});
+	private JTextArea createTextArea(String title, Color bgColor) {
+		JTextArea area = new JTextArea(10, 30);
+		area.setFont(new Font("Roboto", Font.PLAIN, 14));
+		area.setEditable(false);
+		area.setBackground(bgColor);
+		area.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), title));
+		return area;
+	}
+
+	private JTextField createStyledTextField(int columns) {
+		JTextField field = new JTextField(columns);
+		field.setFont(new Font("Roboto", Font.PLAIN, 14));
+		field.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(new Color(100, 149, 237)),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+		return field;
+	}
+
+	private JButton createStyledButton(String text) {
+		JButton button = new JButton(text);
+		button.setFont(new Font("Roboto", Font.BOLD, 14));
+		button.setBackground(new Color(65, 105, 225));
+		button.setForeground(Color.WHITE);
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(new Color(65, 105, 225)),
+				BorderFactory.createEmptyBorder(8, 20, 8, 20)));
+		return button;
 	}
 
 	protected JLabel createLabel(int value) {
 		JLabel label = new JLabel(String.valueOf(value));
 		label.setOpaque(true);
-		label.setBackground(Color.CYAN);
+		label.setBackground(new Color(175, 238, 238));
 		label.setPreferredSize(new Dimension(50, 50));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setFont(new Font("Roboto", Font.BOLD, 18));
+		label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		return label;
 	}
-
-	public abstract String getCode();
-
-	public abstract void visualize();
 
 	protected void highlightLine(int lineNumber) {
 		try {
@@ -108,16 +108,6 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 		}
 	}
 
-	protected void setLabelColor(int i, int j) {
-		labels[i].setBackground(Color.YELLOW);
-		labels[j].setBackground(Color.YELLOW);
-	}
-
-	protected void resetLabelColor(int i, int j, Color color) {
-		labels[i].setBackground(color);
-		labels[j].setBackground(color);
-	}
-
 	protected void swap(int i, int j) {
 		int temp = array[i];
 		array[i] = array[j];
@@ -127,12 +117,21 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 		labels[i].setText(labels[j].getText());
 		labels[j].setText(tempText);
 
-		labels[i].setBackground(Color.RED);
-		labels[j].setBackground(Color.RED);
+		labels[i].setBackground(Color.ORANGE);
+		labels[j].setBackground(Color.ORANGE);
 
 		panel.revalidate();
 		panel.repaint();
 
+		delay();
+	}
+
+	protected void resetLabelColor(int i, int j) {
+		labels[i].setBackground(new Color(175, 238, 238));
+		labels[j].setBackground(new Color(175, 238, 238));
+	}
+
+	protected void delay() {
 		try {
 			Thread.sleep(DELAY);
 		} catch (InterruptedException e) {
@@ -140,4 +139,29 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 		}
 	}
 
+	private void onSearchAction() {
+		String input = inputField.getText();
+		String[] numbers = input.split(",");
+		array = new int[numbers.length];
+		labels = new JLabel[numbers.length];
+
+		try {
+			panel.removeAll();
+			for (int i = 0; i < numbers.length; i++) {
+				array[i] = Integer.parseInt(numbers[i].trim());
+				labels[i] = createLabel(array[i]);
+				panel.add(labels[i]);
+			}
+			panel.revalidate();
+			panel.repaint();
+			logArea.setText("");
+			new Thread(this::visualize).start();
+		} catch (NumberFormatException ex) {
+			JOptionPane.showMessageDialog(this, "Lỗi dữ liệu, vui lòng chỉ nhập số và phân cách bởi dấu phẩy");
+		}
+	}
+
+	public abstract String getCode();
+
+	public abstract void visualize();
 }
