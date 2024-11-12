@@ -3,14 +3,16 @@ package algorithmVisualize;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import java.awt.FlowLayout;
 
 public class SelectionSortVisualize extends AlgorithmSortVisualizer {
+
 	public SelectionSortVisualize() {
 		super();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Initial FlowLayout
 	}
 
 	@Override
@@ -43,14 +45,16 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 		minLabel.setFont(new Font("Roboto", Font.BOLD, 17));
 		minLabel.setForeground(Color.WHITE);
 		panel.add(minLabel);
+
 		try {
 			long startTime = System.currentTimeMillis();
 
 			for (int i = 0; i < len - 1; i++) {
 				int minIndex = i;
-				minLabel.setText("Min: " + String.valueOf(array[minIndex]));
+				minLabel.setText("Min: " + array[minIndex]);
 				minLabel.setVisible(true);
 				labels[i].setBackground(Color.WHITE);
+
 				for (int j = i + 1; j < len; j++) {
 					labels[j].setBackground(Color.YELLOW);
 					Thread.sleep(500);
@@ -59,33 +63,34 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 							labels[minIndex].setBackground(originalColor);
 						}
 						minIndex = j;
-						labels[minIndex].setBackground(Color.ORANGE);
-						minLabel.setText("Min: " + String.valueOf(array[minIndex]));
-						minLabel.setVisible(true);
+						labels[minIndex].setBackground(Color.RED);
+						minLabel.setText("Min: " + array[minIndex]);
 					} else {
 						labels[j].setBackground(originalColor);
 					}
-
-					Thread.sleep(DELAY);
 				}
 
 				if (minIndex != i) {
 					logArea.append("Min: " + array[minIndex] + " ");
-					logArea.append("Đổi chỗ: " + array[i] + " và " + array[minIndex] + "\n");
+					logArea.append("Swapping: " + array[i] + " and " + array[minIndex] + "\n");
+
+					panel.setLayout(null);
 					swap(i, minIndex);
-					minLabel.setText("arr[" + i + "]: " + array[i]);
-					minLabel.setForeground(Color.RED);
-					Thread.sleep(500);
+
+					panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+					panel.revalidate();
+					panel.repaint();
+
 					labels[minIndex].setBackground(originalColor);
 					minLabel.setForeground(Color.WHITE);
-
 				}
+
 				labels[i].setBackground(Color.GREEN);
 			}
 			labels[array.length - 1].setBackground(Color.GREEN);
 
 			long endTime = System.currentTimeMillis();
-			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
+			logArea.append("Algorithm completed in: " + (endTime - startTime) + " ms\n");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -95,5 +100,4 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 	public static void excute() {
 		SwingUtilities.invokeLater(() -> new SelectionSortVisualize().setVisible(true));
 	}
-
 }

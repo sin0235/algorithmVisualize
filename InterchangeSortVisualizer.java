@@ -1,12 +1,14 @@
 package algorithmVisualize;
 
 import java.awt.Color;
-
+import java.awt.FlowLayout;
 import javax.swing.SwingUtilities;
 
 public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
+
 	public InterchangeSortVisualizer() {
 		super();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	}
 
 	@Override
@@ -38,23 +40,28 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 					labels[i].setBackground(Color.YELLOW);
 					labels[j].setBackground(Color.YELLOW);
 					Thread.sleep(DELAY);
+
 					if (array[i] > array[j]) {
 						highlightLine(3);
-						logArea.append("Đổi chỗ: " + array[i] + " và " + array[j] + "\n");
+						logArea.append("Swapping: " + array[i] + " and " + array[j] + "\n");
+
+						panel.setLayout(null);
 						swap(i, j);
+
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+						panel.revalidate();
+						panel.repaint();
 					}
-					labels[i].setBackground(Color.YELLOW);
-					labels[j].setBackground(originalColor);
+
+					resetLabelColor(i, j);
 					Thread.sleep(DELAY);
 				}
-				labels[i].setBackground(originalColor);
-
 				labels[i].setBackground(Color.GREEN);
 			}
 			labels[array.length - 1].setBackground(Color.GREEN);
 
 			long endTime = System.currentTimeMillis();
-			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
+			logArea.append("Algorithm completed in: " + (endTime - startTime) + " ms\n");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -64,5 +71,4 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 	public static void excute() {
 		SwingUtilities.invokeLater(() -> new InterchangeSortVisualizer().setVisible(true));
 	}
-
 }

@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+
+import java.awt.event.ActionEvent;
+
 public abstract class AlgorithmSortVisualizer extends JFrame {
 	protected JPanel panel;
 	protected JTextField inputField;
@@ -113,18 +116,57 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
 		array[i] = array[j];
 		array[j] = temp;
 
-		String tempText = labels[i].getText();
-		labels[i].setText(labels[j].getText());
-		labels[j].setText(tempText);
 
 		labels[i].setBackground(Color.ORANGE);
 		labels[j].setBackground(Color.ORANGE);
 
+		int steps = 20;
+		int delay = 50;
+
+		int startX = labels[i].getLocation().x;
+		int startY = labels[i].getLocation().y;
+		int endX = labels[j].getLocation().x;
+		int endY = labels[j].getLocation().y;
+		Dimension originalSize = labels[i].getSize();
+
+		int maxScale = 10;
+
+		for (int step = 0; step <= steps; step++) {
+			// Calculate movement and scale changes
+			int dx = (endX - startX) * step / steps;
+			int dy = (endY - startY) * step / steps;
+
+			int scale = maxScale - maxScale * step / steps;
+
+			labels[i].setLocation(startX + dx, startY - dy);
+			labels[j].setLocation(endX - dx, endY + dy);
+
+			labels[i].setSize(originalSize.width + scale, originalSize.height + scale);
+			labels[j].setSize(originalSize.width - scale, originalSize.height - scale);
+
+			panel.revalidate();
+			panel.repaint();
+
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		String tempText = labels[i].getText();
+		labels[i].setText(labels[j].getText());
+		labels[j].setText(tempText);
+		labels[i].setLocation(endX, endY);
+		labels[j].setLocation(startX, startY);
+		labels[i].setSize(originalSize);
+		labels[j].setSize(originalSize);
+		labels[i].setBackground(originalColor);
+		labels[j].setBackground(originalColor);
+
 		panel.revalidate();
 		panel.repaint();
-
-		delay();
 	}
+
 
 	protected void resetLabelColor(int i, int j) {
 		labels[i].setBackground(new Color(175, 238, 238));
