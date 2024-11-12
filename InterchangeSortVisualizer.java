@@ -34,7 +34,7 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 				highlightLine(1);
 
 				for (int j = i + 1; j < array.length; j++) {
-					highlightLine(2); // Vòng lặp j
+					highlightLine(2);
 					labels[i].setBackground(Color.YELLOW);
 					labels[j].setBackground(Color.YELLOW);
 					Thread.sleep(DELAY);

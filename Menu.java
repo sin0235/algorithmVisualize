@@ -96,8 +96,10 @@ public class Menu {
 	private static void timKiem(String algorithm) {
 		switch (algorithm) {
 		case "Tìm kiếm tuyến tính":
+			LinearSearchVisualize.excute();
 			break;
 		case "Tìm kiếm nhị phân":
+			BinarySearchVisualize.excute();
 			break;
 		}
 	}
