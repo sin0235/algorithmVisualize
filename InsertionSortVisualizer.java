@@ -105,22 +105,25 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
     private void animateShift(JLabel label, int targetX, int targetY) {
         int startX = label.getX();
         int startY = label.getY();
+        int totalSteps = 10;
 
-        for (int step = 0; step <= 10; step++) {
-            final int x = startX + (int) ((targetX - startX) * (step / 10.0));
-            final int y = startY + (int) ((targetY - startY) * (step / 10.0));
-            SwingUtilities.invokeLater(() -> label.setLocation(x, y));
+        for (int step = 0; step <= totalSteps; step++) {
+            final int x = startX + (int) ((targetX - startX) * (step / (double) totalSteps));
+            final int y = startY + (int) ((targetY - startY) * (step / (double) totalSteps));
 
             try {
-                sleep(130);
+                SwingUtilities.invokeLater(() -> label.setLocation(x, y));
+                Thread.sleep(30); // Reduced sleep time for smoother animation
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        // Ensure final position is exactly at target
         label.setLocation(targetX, targetY);
     }
 
-    public static void excute() {
+    public static void execute() {
         SwingUtilities.invokeLater(() -> new InsertionSortVisualizer().setVisible(true));
     }
 }

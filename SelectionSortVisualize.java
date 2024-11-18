@@ -12,7 +12,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 
 	public SelectionSortVisualize() {
 		super();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Initial FlowLayout
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30)); // Initial FlowLayout
 	}
 
 	@Override
@@ -54,6 +54,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 				minLabel.setText("Min: " + array[minIndex]);
 				minLabel.setVisible(true);
 				labels[i].setBackground(Color.WHITE);
+				labels[i].setForeground(Color.WHITE);
 
 				for (int j = i + 1; j < len; j++) {
 					labels[j].setBackground(Color.YELLOW);
@@ -61,9 +62,11 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 					if (array[j] < array[minIndex]) {
 						if (minIndex != i) {
 							labels[minIndex].setBackground(originalColor);
+
 						}
 						minIndex = j;
 						labels[minIndex].setBackground(Color.RED);
+						delay();
 						minLabel.setText("Min: " + array[minIndex]);
 					} else {
 						labels[j].setBackground(originalColor);
@@ -75,17 +78,21 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 					logArea.append("Swapping: " + array[i] + " and " + array[minIndex] + "\n");
 
 					panel.setLayout(null);
-					swap(i, minIndex);
+					labels[i].setBackground(originalColor);
+					labels[i].setForeground(Color.BLACK);
 
-					panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+					swap(i, minIndex);
+					labels[i].setBackground(originalColor);
+					panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 					panel.revalidate();
 					panel.repaint();
 
-					labels[minIndex].setBackground(originalColor);
 					minLabel.setForeground(Color.WHITE);
 				}
-
+				delay();
 				labels[i].setBackground(Color.GREEN);
+				labels[i].setForeground(Color.BLACK);
 			}
 			labels[array.length - 1].setBackground(Color.GREEN);
 
@@ -97,7 +104,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 		}
 	}
 
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new SelectionSortVisualize().setVisible(true));
 	}
 }

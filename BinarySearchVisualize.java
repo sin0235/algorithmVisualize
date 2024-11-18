@@ -54,7 +54,7 @@ public class BinarySearchVisualize extends SearchAlgorithmsVisualize {
         delay();
     }
 
-    public static void excute() {
+    public static void execute() {
         SwingUtilities.invokeLater(() -> new BinarySearchVisualize().setVisible(true));
     }
 }

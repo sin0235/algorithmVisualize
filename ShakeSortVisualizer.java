@@ -1,12 +1,17 @@
 package algorithmVisualize;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 
 import javax.swing.SwingUtilities;
 
 public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 	public ShakeSortVisualizer() {
 		super();
+		panel.setLayout(null);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
+		panel.revalidate();
+		panel.repaint();
 	}
 
 	@Override
@@ -50,13 +55,18 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 				for (int j = left; j < right; j++) {
 					labels[j].setBackground(Color.YELLOW);
 					labels[j + 1].setBackground(Color.YELLOW);
-					Thread.sleep(DELAY);
+					Thread.sleep(500);
 					if (array[j] > array[j + 1]) {
-						logArea.append("Đổi chỗ: " + array[j] + " và " + array[j + 1] + "\n");
+						logArea.append("Đổi chỗ: " + array[j] + " và " + array[j + 1] + "\n");panel.setLayout(null);
 						swap(j, j + 1);
+
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
+						Thread.sleep(500);
+						panel.revalidate();
+						panel.repaint();
 						labels[k].setForeground(Color.BLACK);
 						k = j;
-						labels[k].setForeground(Color.WHITE);
+						labels[k].setForeground(Color.MAGENTA);
 					}
 
 					labels[j].setBackground(originalColor);
@@ -77,10 +87,15 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 
 					if (array[i] < array[i - 1]) {
 						logArea.append("Đổi chỗ: " + array[i] + " và " + array[i - 1] + "\n");
-						swap(i, i - 1);
+						panel.setLayout(null);
+						swap(i - 1, i);
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
+						panel.revalidate();
+						panel.repaint();
+
 						labels[k].setForeground(Color.BLACK);
 						k = i;
-						labels[k].setForeground(Color.WHITE);
+						labels[k].setForeground(Color.MAGENTA);
 
 					}
 					labels[i].setBackground(originalColor);
@@ -91,7 +106,7 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 					labels[l].setBackground(Color.GREEN);
 				}
 				left = k;
-				Thread.sleep(DELAY + 100);
+				Thread.sleep(700);
 				labels[k].setForeground(Color.BLACK);
 			}
 			labels[k].setBackground(Color.GREEN);
@@ -108,19 +123,58 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 		array[i] = array[j];
 		array[j] = temp;
 
+		labels[i].setBackground(Color.ORANGE);
+		labels[j].setBackground(Color.ORANGE);
+
+		final int STEPS = 25; // Fewer, smoother steps
+		final int DELAY = 10; // Faster update
+		final int ARC_HEIGHT = 100; // More dramatic arc
+
+		int startX = labels[i].getLocation().x;
+		int startY = labels[i].getLocation().y;
+		int endX = labels[j].getLocation().x;
+		int endY = labels[j].getLocation().y;
+		Dimension originalSize = labels[i].getSize();
+
+		for (int step = 0; step <= STEPS; step++) {
+			double progress = (double) step / STEPS;
+
+			// Enhanced cubic ease-in-out for ultra-smooth motion
+			double smoothProgress = progress < 0.5
+					? 4 * progress * progress * progress
+					: 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+			int dx = (int)((endX - startX) * smoothProgress);
+			int dy = (int)(ARC_HEIGHT * Math.sin(progress * Math.PI) - ARC_HEIGHT/2);
+
+			labels[i].setLocation(startX + dx, startY + dy);
+			labels[j].setLocation(endX - dx, endY - dy);
+
+			panel.revalidate();
+			panel.repaint();
+
+			try {
+				Thread.sleep(DELAY);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				break;
+			}
+		}
+
+		// Reset labels
+		labels[i].setBackground(originalColor);
+		labels[j].setBackground(originalColor);
+		labels[i].setLocation(startX, startY);
+		labels[j].setLocation(endX, endY);
+
 		String tempText = labels[i].getText();
 		labels[i].setText(labels[j].getText());
 		labels[j].setText(tempText);
 
-		labels[i].setBackground(Color.ORANGE);
-		labels[j].setBackground(Color.ORANGE);
-
 		panel.revalidate();
 		panel.repaint();
-
-		delay();
 	}
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new ShakeSortVisualizer().setVisible(true));
 	}
 

@@ -161,7 +161,7 @@ public class MergeSortVisualizer extends AlgorithmSortVisualizer {
 		logArea.append("Thuật toán kết thúc sau " + (endTime - startTime) + " ms\n");
 	}
 
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new MergeSortVisualizer().setVisible(true));
 	}
 

@@ -6,9 +6,14 @@ import javax.swing.SwingUtilities;
 
 public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public InterchangeSortVisualizer() {
 		super();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 	}
 
 	@Override
@@ -44,11 +49,11 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 					if (array[i] > array[j]) {
 						highlightLine(3);
 						logArea.append("Swapping: " + array[i] + " and " + array[j] + "\n");
-
+						resetLabelColor(i, j);
 						panel.setLayout(null);
 						swap(i, j);
-
-						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+						Thread.sleep(100);
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 						panel.revalidate();
 						panel.repaint();
 					}
@@ -68,7 +73,7 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 		}
 	}
 
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new InterchangeSortVisualizer().setVisible(true));
 	}
 }

@@ -35,77 +35,67 @@ public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
 
 	public void visualize() {
 		int len = array.length;
-		JLabel tempLabel = new JLabel("", SwingConstants.CENTER);
-		tempLabel.setOpaque(true);
-		tempLabel.setBackground(Color.CYAN);
-		tempLabel.setFont(new Font("Roboto", Font.BOLD, 17));
-		tempLabel.setForeground(Color.BLACK);
-		panel.add(tempLabel);
 
 		try {
 			long startTime = System.currentTimeMillis();
 
 			for (int i = 1; i < len; i++) {
 				int temp = array[i];
-				tempLabel.setText(String.valueOf(temp)); // Hiển thị phần tử đang xét
-				tempLabel.setVisible(true);
-
-				int left = 0;
-				int right = i - 1;
 				labels[i].setBackground(Color.YELLOW);
-				Thread.sleep(500);
 
-				int mid;
+				// Binary Search Visualization
+				int left = 0, right = i - 1;
 				while (left <= right) {
-					mid = (left + right) / 2;
-					labels[mid].setBackground(Color.MAGENTA);
-					Thread.sleep(DELAY);
+					int mid = left + (right - left) / 2;
 
-					if (array[mid] < temp) {
-						left = mid + 1;
-					} else {
-						right = mid - 1;
+					// Highlight search range
+					for (int j = left; j <= right; j++) {
+						labels[j].setBackground(j == mid ? Color.MAGENTA : Color.CYAN);
 					}
+					Thread.sleep(500);
 
-					labels[mid].setBackground(originalColor);
+					// Explain search logic
+					if (array[mid] > temp) {
+						// Search left half
+						right = mid - 1;
+					} else {
+						// Search right half
+						left = mid + 1;
+					}
+					labels[left].setBackground(Color.WHITE);
+					Thread.sleep(500);
 				}
 
-				// Dời các phần tử sang phải để tạo chỗ cho temp
+				// Shift elements for insertion
 				for (int j = i - 1; j >= left; j--) {
-					logArea.append("Dời " + array[j] + " từ index " + j + " sang index " + (j + 1) + "\n");
 					array[j + 1] = array[j];
 					labels[j + 1].setText(String.valueOf(array[j]));
 					labels[j + 1].setBackground(Color.RED);
-					labels[j].setText("");
-					Thread.sleep(DELAY);
+					Thread.sleep(400);
 					labels[j + 1].setBackground(originalColor);
 				}
 
-				// Chèn phần tử đang xét vào vị trí left
+				// Insert element
 				array[left] = temp;
 				labels[left].setText(String.valueOf(temp));
-				labels[left].setBackground(Color.CYAN);
-				Thread.sleep(DELAY);
-				labels[left].setBackground(originalColor);
-
-				labels[i].setBackground(originalColor);
-				tempLabel.setVisible(false); // Ẩn label tạm sau khi chèn
+				Thread.sleep(500);
+				for(int ii = 0; ii <= left; ii++) {
+					labels[i].setBackground(originalColor);
+				}
 			}
 
-			// Đánh dấu các phần tử đã sắp xếp
+
 			for (JLabel label : labels) {
 				label.setBackground(Color.GREEN);
 			}
 
 			long endTime = System.currentTimeMillis();
-			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
-
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new BinaryInsertionSortVisualizer().setVisible(true));
 	}
 }

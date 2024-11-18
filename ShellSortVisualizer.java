@@ -1,8 +1,6 @@
 package algorithmVisualize;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.*;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -14,6 +12,7 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 
 	public ShellSortVisualizer() {
 		super();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 	}
 
 	private JLabel createCircleLabel(String text) {
@@ -106,7 +105,7 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 		}
 	}
 
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new ShellSortVisualizer().setVisible(true));
 	}
 

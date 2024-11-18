@@ -8,6 +8,7 @@ import java.util.Random;
 public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 	public QuickSortVisualizer() {
 		super();
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	}
 
 	public String getCode() {
@@ -93,7 +94,12 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 				logArea.append(array[j] + "<" + pivot + " => i = " + i + "\n");
 
 				if (i != j) {
+					panel.setLayout(null);
 					swap(i, j);
+
+					panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+					panel.revalidate();
+					panel.repaint();
 					try {
 						Thread.sleep(DELAY);
 					} catch (InterruptedException e) {
@@ -107,7 +113,13 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 		}
 		iLabel.setText("i: " + i);
 		iLabel.setVisible(true);
-		swap(i + 1, right);
+		panel.setLayout(null);
+		swap(i + 1,right);
+
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.revalidate();
+		panel.repaint();
+
 		logArea.append("Array[pivotIndex]: " + array[i + 1] + "\n");
 
 		try {
@@ -118,8 +130,63 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 		labels[right].setBackground(Color.WHITE);
 		return i + 1;
 	}
+	@Override
+	protected void swap(int i, int j) {
+		int temp = array[i];
+		array[i] = array[j];
+		array[j] = temp;
 
-	public static void excute() {
+
+		labels[i].setBackground(Color.ORANGE);
+		labels[j].setBackground(Color.ORANGE);
+
+		int steps = 20;
+		int delay = 50;
+
+		int startX = labels[i].getLocation().x;
+		int startY = labels[i].getLocation().y;
+		int endX = labels[j].getLocation().x;
+		int endY = labels[j].getLocation().y;
+		Dimension originalSize = labels[i].getSize();
+
+
+		int maxScale = 10;
+
+		for (int step = 0; step <= steps; step++) {
+			// Calculate movement and scale changes
+			int dx = (endX - startX) * step / steps;
+			int dy = (endY - startY) * step / steps;
+
+			int scale = maxScale - maxScale * step / steps;
+			labels[i].setSize(originalSize.width + scale, originalSize.height + scale);
+			labels[j].setSize(originalSize.width - scale, originalSize.height - scale);
+			labels[i].setLocation(startX + dx, startY - dy);
+			labels[j].setLocation(endX - dx, endY + dy);
+
+
+
+			panel.revalidate();
+			panel.repaint();
+
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		String tempText = labels[i].getText();
+		labels[i].setText(labels[j].getText());
+		labels[j].setText(tempText);
+		labels[i].setLocation(endX, endY);
+		labels[j].setLocation(startX, startY);
+		labels[i].setSize(originalSize);
+		labels[j].setSize(originalSize);
+
+		panel.revalidate();
+		panel.repaint();
+
+	}
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new QuickSortVisualizer().setVisible(true));
 	}
 

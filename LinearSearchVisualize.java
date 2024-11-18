@@ -37,7 +37,7 @@ public class LinearSearchVisualize extends SearchAlgorithmsVisualize {
 
     }
 
-    public static void excute() {
+    public static void execute() {
         SwingUtilities.invokeLater(() -> new LinearSearchVisualize().setVisible(true));
     }
 }

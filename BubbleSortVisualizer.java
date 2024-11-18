@@ -6,9 +6,14 @@ import javax.swing.SwingUtilities;
 
 public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public BubbleSortVisualizer() {
 		super();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 	}
 
 	@Override
@@ -39,21 +44,23 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 
 					labels[j].setBackground(Color.YELLOW);
 					labels[j + 1].setBackground(Color.YELLOW);
-
-					Thread.sleep(DELAY);
+					delay();
 					if (array[j] > array[j + 1]) {
+						resetLabelColor(j, j + 1);
 						highlightLine(3);
 						logArea.append("Swapping: " + array[j] + " and " + array[j + 1] + "\n");
-
 						panel.setLayout(null);
 						swap(j, j + 1);
-
-						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+						
+						resetLabelColor(j, j + 1);
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 						panel.revalidate();
 						panel.repaint();
+						Thread.sleep(DELAY);
 					}
 
 					resetLabelColor(j, j + 1);
+					
 				}
 				labels[array.length - i - 1].setBackground(Color.GREEN);
 			}
@@ -66,7 +73,7 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 		}
 	}
 
-	public static void excute() {
+	public static void execute() {
 		SwingUtilities.invokeLater(() -> new BubbleSortVisualizer().setVisible(true));
 	}
 }

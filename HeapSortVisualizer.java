@@ -1,93 +1,316 @@
 package algorithmVisualize;
 
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
+import java.awt.geom.*;
 
 public class HeapSortVisualizer extends JFrame {
-	private JPanel treePanel;
-	private JTextArea logArea;
-	private JTextField inputField;
-	private JLabel[] labels;
-	private int[] array;
-	private int arraySize;
+    // Constants for styling
+    private static final Color BACKGROUND_COLOR = new Color(240, 245, 255);
+    private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
+    private static final Color ACCENT_COLOR = new Color(52, 152, 219);
+    private static final Color NODE_COLOR = new Color(255, 255, 255);
+    private static final Color NODE_BORDER = new Color(41, 128, 185);
+    private static final Color LINE_COLOR = new Color(189, 195, 199);
+    private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 24);
+    private static final Font LABEL_FONT = new Font("Segoe UI", Font.PLAIN, 14);
+    private static final Font NODE_FONT = new Font("Segoe UI", Font.BOLD, 16);
 
-	public HeapSortVisualizer() {
-		setTitle("Heap Sort Visualizer");
-		setSize(1000, 700);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout(10, 10));
+    private JPanel treePanel;
+    private JTextArea logArea;
+    private JTextField inputField;
+    private JLabel[] labels;
+    private int[] array;
+    private int arraySize;
+    private JProgressBar progressBar;
+    private JLabel statusLabel;
 
-		// Control Panel with Styling
-		JPanel controlPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-		controlPanel.setBorder(BorderFactory.createTitledBorder("Input Data"));
+    public HeapSortVisualizer() {
+        setTitle("Heap Sort Visualizer");
+        setSize(1200, 800);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        // Main container with gradient background
+        JPanel mainContainer = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                GradientPaint gradient = new GradientPaint(0, 0, BACKGROUND_COLOR, getWidth(), getHeight(), 
+                    new Color(255, 255, 255));
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
+        mainContainer.setLayout(new BorderLayout(20, 20));
+        mainContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-		inputField = new JTextField(20);
-		JButton startButton = new JButton("Start");
+        // Header Panel
+        JPanel headerPanel = createHeaderPanel();
+        mainContainer.add(headerPanel, BorderLayout.NORTH);
 
-		JLabel inputLabel = new JLabel("Nhập dữ liệu đầu vào (Phân cách bởi dấu phẩy): ");
-		inputLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
-		controlPanel.add(inputLabel);
-		controlPanel.add(inputField);
-		controlPanel.add(startButton);
+        // Center Panel containing Tree and Array
+        JPanel centerPanel = new JPanel(new BorderLayout(20, 0));
+        centerPanel.setOpaque(false);
 
-		add(controlPanel, BorderLayout.NORTH);
+        // Tree Panel with custom styling
+        treePanel = createTreePanel();
+        centerPanel.add(treePanel, BorderLayout.CENTER);
 
-		// Tree Panel with Border
-		treePanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				if (array != null) {
-					Graphics2D g2 = (Graphics2D) g;
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					drawTree(g2, 0, getWidth() / 2, 50, getWidth() / 4);
-				}
-			}
-		};
-		treePanel.setBorder(BorderFactory.createTitledBorder("Heap Tree Visualization"));
-		treePanel.setBackground(new Color(250, 250, 255));
-		treePanel.setPreferredSize(new Dimension(800, 500));
-		add(treePanel, BorderLayout.CENTER);
+        // Array Panel
+        JPanel arrayContainer = new JPanel(new BorderLayout(10, 10));
+        arrayContainer.setOpaque(false);
+        arrayContainer.setPreferredSize(new Dimension(200, 0));
+        centerPanel.add(arrayContainer, BorderLayout.EAST);
 
-		// Log Area with Styling
-		logArea = new JTextArea(6, 40);
-		logArea.setEditable(false);
-		logArea.setFont(new Font("Roboto", Font.PLAIN, 14));
-		logArea.setBackground(new Color(245, 245, 245));
-		logArea.setBorder(BorderFactory.createTitledBorder("Execution Log"));
-		JScrollPane logScroll = new JScrollPane(logArea);
-		add(logScroll, BorderLayout.SOUTH);
+        mainContainer.add(centerPanel, BorderLayout.CENTER);
 
-		startButton.addActionListener(e -> onStart());
+        // Bottom Panel with Log and Status
+        JPanel bottomPanel = createBottomPanel();
+        mainContainer.add(bottomPanel, BorderLayout.SOUTH);
 
-		setVisible(true);
-	}
+        add(mainContainer);
+        setVisible(true);
+    }
 
-	private void onStart() {
-		array = parseInput();
-		if (array.length > 0) {
-			arraySize = array.length;
-			initializeArrayLabels();
-			new Thread(this::heapSort).start();
-		}
-	}
+    private JPanel createHeaderPanel() {
+        JPanel headerPanel = new JPanel(new BorderLayout(15, 15));
+        headerPanel.setOpaque(false);
 
-	private int[] parseInput() {
-		String input = inputField.getText();
-		String[] tokens = input.split(",");
-		int[] numbers = new int[tokens.length];
-		try {
-			for (int i = 0; i < tokens.length; i++) {
-				numbers[i] = Integer.parseInt(tokens[i].trim());
-			}
-			return numbers;
-		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(this, "Lỗi dữ liệu, vui lòng chỉ nhập số và phân cách bới dấu phẩy");
-			return new int[0];
-		}
-	}
+        // Title
+        JLabel titleLabel = new JLabel("Heap Sort Visualizer", SwingConstants.CENTER);
+        titleLabel.setFont(TITLE_FONT);
+        titleLabel.setForeground(PRIMARY_COLOR);
+        headerPanel.add(titleLabel, BorderLayout.NORTH);
 
-	private void initializeArrayLabels() {
+        // Input Panel
+        JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
+        inputPanel.setOpaque(false);
+
+        JLabel inputLabel = new JLabel("Nhập dữ liệu (phân cách bởi dấu phẩy):");
+        inputLabel.setFont(LABEL_FONT);
+        inputField = createStyledTextField(20);
+        JButton startButton = createStyledButton("Bắt đầu");
+        JButton randomButton = createStyledButton("Tạo ngẫu nhiên");
+
+        inputPanel.add(inputLabel);
+        inputPanel.add(inputField);
+        inputPanel.add(startButton);
+        inputPanel.add(randomButton);
+
+        headerPanel.add(inputPanel, BorderLayout.CENTER);
+
+        // Action Listeners
+        startButton.addActionListener(e -> onStart());
+        randomButton.addActionListener(e -> generateRandomData());
+
+        return headerPanel;
+    }
+
+    private JPanel createTreePanel() {
+        JPanel panel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (array != null) {
+                    Graphics2D g2 = (Graphics2D) g;
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                    drawTree(g2, 0, getWidth() / 2, 80, getWidth() / 4);
+                }
+            }
+        };
+        panel.setBackground(BACKGROUND_COLOR);
+        panel.setBorder(createStyledBorder("Cây Heap"));
+        return panel;
+    }
+
+    private JPanel createBottomPanel() {
+        JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
+        bottomPanel.setOpaque(false);
+
+        // Log Area
+        logArea = new JTextArea(6, 40);
+        logArea.setFont(LABEL_FONT);
+        logArea.setEditable(false);
+        logArea.setBackground(new Color(250, 250, 250));
+        logArea.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+        JScrollPane scrollPane = new JScrollPane(logArea);
+        scrollPane.setBorder(createStyledBorder("Thực thi"));
+        bottomPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Status Panel
+        JPanel statusPanel = new JPanel(new BorderLayout(10, 0));
+        statusPanel.setOpaque(false);
+        
+        statusLabel = new JLabel("Sẵn sàng");
+        statusLabel.setFont(LABEL_FONT);
+        
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setStringPainted(true);
+        progressBar.setString("0%");
+        progressBar.setPreferredSize(new Dimension(200, 20));
+
+        statusPanel.add(statusLabel, BorderLayout.WEST);
+        statusPanel.add(progressBar, BorderLayout.EAST);
+        
+        bottomPanel.add(statusPanel, BorderLayout.SOUTH);
+
+        return bottomPanel;
+    }
+
+    private void drawTree(Graphics2D g, int index, int x, int y, int xOffset) {
+        if (index >= arraySize) return;
+
+        // Draw node
+        g.setColor(NODE_COLOR);
+        g.fillOval(x - 30, y - 30, 60, 60);
+        g.setColor(NODE_BORDER);
+        g.setStroke(new BasicStroke(2));
+        g.drawOval(x - 30, y - 30, 60, 60);
+
+        // Draw value
+        g.setFont(NODE_FONT);
+        String text = String.valueOf(array[index]);
+        FontMetrics fm = g.getFontMetrics();
+        int textX = x - fm.stringWidth(text) / 2;
+        int textY = y + fm.getAscent() / 2 - 2;
+        g.drawString(text, textX, textY);
+
+        // Draw connections
+        g.setColor(LINE_COLOR);
+        g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+
+        if (2 * index + 1 < arraySize) {
+            drawConnection(g, x, y, x - xOffset, y + 80);
+            drawTree(g, 2 * index + 1, x - xOffset, y + 80, xOffset / 2);
+        }
+        if (2 * index + 2 < arraySize) {
+            drawConnection(g, x, y, x + xOffset, y + 80);
+            drawTree(g, 2 * index + 2, x + xOffset, y + 80, xOffset / 2);
+        }
+    }
+
+    private void drawConnection(Graphics2D g, int x1, int y1, int x2, int y2) {
+        QuadCurve2D curve = new QuadCurve2D.Float(
+            x1, y1,
+            (x1 + x2) / 2, (y1 + y2) / 2 - 20,
+            x2, y2
+        );
+        g.draw(curve);
+    }
+
+    private JTextField createStyledTextField(int columns) {
+        JTextField field = new JTextField(columns);
+        field.setFont(LABEL_FONT);
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(PRIMARY_COLOR, 1, true),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        return field;
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                if (getModel().isPressed()) {
+                    g2d.setColor(PRIMARY_COLOR.darker());
+                } else if (getModel().isRollover()) {
+                    g2d.setColor(ACCENT_COLOR);
+                } else {
+                    g2d.setColor(PRIMARY_COLOR);
+                }
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+                
+                g2d.setColor(Color.WHITE);
+                g2d.setFont(getFont());
+                FontMetrics metrics = g2d.getFontMetrics();
+                int x = (getWidth() - metrics.stringWidth(getText())) / 2;
+                int y = ((getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
+                g2d.drawString(getText(), x, y);
+            }
+        };
+        button.setFont(LABEL_FONT);
+        button.setForeground(Color.WHITE);
+        button.setPreferredSize(new Dimension(120, 35));
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
+    }
+
+    private Border createStyledBorder(String title) {
+        return BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(PRIMARY_COLOR, 1, true),
+                title,
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                LABEL_FONT,
+                PRIMARY_COLOR
+            ),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        );
+    }
+
+    private void generateRandomData() {
+        int size = 7; // Số phần tử ngẫu nhiên
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            sb.append(1 + (int)(Math.random() * 99));
+            if (i < size - 1) sb.append(", ");
+        }
+        inputField.setText(sb.toString());
+    }
+
+    private void updateProgress(int progress) {
+        progressBar.setValue(progress);
+        progressBar.setString(progress + "%");
+    }
+
+    private void updateStatus(String status) {
+        statusLabel.setText(status);
+        log(status);
+    }
+
+    // Các phương thức xử lý thuật toán giữ nguyên
+    private void onStart() {
+        array = parseInput();
+        if (array.length > 0) {
+            arraySize = array.length;
+            initializeArrayLabels();
+            updateStatus("Bắt đầu sắp xếp...");
+            new Thread(this::heapSort).start();
+        }
+    }
+
+    private int[] parseInput() {
+        String input = inputField.getText();
+        String[] tokens = input.split(",");
+        int[] numbers = new int[tokens.length];
+        try {
+            for (int i = 0; i < tokens.length; i++) {
+                numbers[i] = Integer.parseInt(tokens[i].trim());
+            }
+            return numbers;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Lỗi dữ liệu! Vui lòng chỉ nhập số và phân cách bởi dấu phẩy",
+                "Lỗi",
+                JOptionPane.ERROR_MESSAGE);
+            return new int[0];
+        }
+    }
+
+    private void initializeArrayLabels() {
 		JPanel arrayPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		arrayPanel.setBorder(BorderFactory.createTitledBorder("Array Representation"));
 		labels = new JLabel[array.length];
@@ -106,32 +329,7 @@ public class HeapSortVisualizer extends JFrame {
 		repaint();
 	}
 
-	private void drawTree(Graphics2D g, int index, int x, int y, int xOffset) {
-		if (index >= arraySize) return;
-
-		g.setColor(Color.ORANGE);
-		g.fillOval(x - 25, y - 25, 50, 50);
-		g.setColor(Color.BLACK);
-		g.drawOval(x - 25, y - 25, 50, 50);
-
-		g.setFont(new Font("Roboto", Font.BOLD, 20));
-		String text = String.valueOf(array[index]);
-		FontMetrics fm = g.getFontMetrics();
-		int textX = x - fm.stringWidth(text) / 2;
-		int textY = y + fm.getAscent() / 2 - 2;
-		g.drawString(text, textX, textY);
-
-		if (2 * index + 1 < arraySize) {
-			g.drawLine(x, y, x - xOffset, y + 60);
-			drawTree(g, 2 * index + 1, x - xOffset, y + 60, xOffset / 2);
-		}
-		if (2 * index + 2 < arraySize) {
-			g.drawLine(x, y, x + xOffset, y + 60);
-			drawTree(g, 2 * index + 2, x + xOffset, y + 60, xOffset / 2);
-		}
-	}
-
-	private void heapSort() {
+		private void heapSort() {
 		buildMaxHeap();
 		for (int i = array.length - 1; i > 0; i--) {
 			swap(0, i);
@@ -205,7 +403,14 @@ public class HeapSortVisualizer extends JFrame {
 		logArea.append(message + "\n");
 	}
 
-	public static void excute() {
-		SwingUtilities.invokeLater(HeapSortVisualizer::new);
-	}
+
+
+    public static void execute() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SwingUtilities.invokeLater(HeapSortVisualizer::new);
+    }
 }
