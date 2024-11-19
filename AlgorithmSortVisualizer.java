@@ -8,7 +8,11 @@ import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 
 public abstract class AlgorithmSortVisualizer extends JFrame {
-    protected JPanel panel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected JPanel panel;
     protected JTextField inputField;
     protected JButton startButton;
     protected JTextArea codeArea;
@@ -21,6 +25,8 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
     protected static final Color BACKGROUND_COLOR = new Color(250, 250, 250);
     protected static final Font MAIN_FONT = new Font("Segoe UI", Font.PLAIN, 14);
     protected static final Font HEADER_FONT = new Font("Segoe UI", Font.BOLD, 16);
+    protected final DefaultHighlighter.DefaultHighlightPainter highlightPainter;
+    protected Object currentHighlight;
 
     public AlgorithmSortVisualizer() {
         setupMainFrame();
@@ -30,6 +36,8 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         codeArea.setText(getCode());
         startButton.addActionListener(e -> onSearchAction());
+        highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 255, 200));
+        currentHighlight = null;
     }
 
     protected void setupMainFrame() {
@@ -168,15 +176,23 @@ public abstract class AlgorithmSortVisualizer extends JFrame {
     }
 
     protected void highlightLine(int lineNumber) {
-        try {
-            int start = codeArea.getLineStartOffset(lineNumber);
-            int end = codeArea.getLineEndOffset(lineNumber);
-            codeArea.getHighlighter().removeAllHighlights();
-            codeArea.getHighlighter().addHighlight(start, end,
-                new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 255, 200)));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                if (currentHighlight != null) {
+                    codeArea.getHighlighter().removeHighlight(currentHighlight);
+                }
+
+                int start = codeArea.getLineStartOffset(lineNumber - 1);
+                int end = codeArea.getLineEndOffset(lineNumber - 1);
+
+                currentHighlight = codeArea.getHighlighter().addHighlight(start, end, highlightPainter);
+
+                Rectangle rect = codeArea.modelToView(start);
+                codeArea.scrollRectToVisible(rect);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 	protected void swap(int i, int j) {

@@ -7,7 +7,11 @@ import java.awt.geom.*;
 
 public class HeapSortVisualizer extends JFrame {
 
-    private static final Color BACKGROUND_COLOR = new Color(240, 245, 255);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final Color BACKGROUND_COLOR = new Color(240, 245, 255);
     private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
     private static final Color ACCENT_COLOR = new Color(52, 152, 219);
     private static final Color NODE_COLOR = new Color(255, 255, 255);
@@ -31,7 +35,12 @@ public class HeapSortVisualizer extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         JPanel mainContainer = new JPanel() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;

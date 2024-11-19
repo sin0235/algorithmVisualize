@@ -19,17 +19,17 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 	@Override
 	public String getCode() {
 		return """
-				for (int i = 0; i < array.length - 1; i++) {
-				    for (int j = i + 1; j < array.length; j++) {
-				        if (array[i] > array[j]) {
-				            // Swap array[i] and array[j]
-				            int temp = array[i];
-				            array[i] = array[j];
-				            array[j] = temp;
-				        }
-				    }
-				}
-				""";
+          for (int i = 0; i < array.length - 1; i++) {
+              for (int j = i + 1; j < array.length; j++) {
+                  if (array[i] > array[j]) {
+                      // Swap array[i] and array[j]
+                      int temp = array[i];
+                      array[i] = array[j];
+                      array[j] = temp;
+                  }
+              }
+          }
+          """;
 	}
 
 	@Override
@@ -39,6 +39,7 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 		try {
 			for (int i = 0; i < array.length - 1; i++) {
 				highlightLine(1);
+				Thread.sleep(DELAY);
 
 				for (int j = i + 1; j < array.length; j++) {
 					highlightLine(2);
@@ -46,8 +47,17 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 					labels[j].setBackground(Color.YELLOW);
 					Thread.sleep(DELAY);
 
+					highlightLine(3);
+					Thread.sleep(DELAY);
+
 					if (array[i] > array[j]) {
-						highlightLine(3);
+						highlightLine(4);
+						Thread.sleep(DELAY);
+
+						highlightLine(5);
+						highlightLine(6);
+						highlightLine(7);
+
 						logArea.append("Swapping: " + array[i] + "<->" + array[j] + "\n");
 						resetLabelColor(i, j);
 						panel.setLayout(null);

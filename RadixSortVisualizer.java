@@ -8,6 +8,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class RadixSortVisualizer extends JFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7502774942984918594L;
 	private JPanel arrayPanel, queuePanel;
 	private JLabel expLabel;
 	private JTextField inputField;

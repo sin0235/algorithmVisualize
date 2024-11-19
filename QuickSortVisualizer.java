@@ -6,33 +6,37 @@ import java.lang.Thread;
 import java.util.Random;
 
 public class QuickSortVisualizer extends AlgorithmSortVisualizer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public QuickSortVisualizer() {
 		super();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 	}
 
 	public String getCode() {
 		return """
-				       int patition(int[] array, int l, int r) {
-				             int i = l - 1;
-				             for (int j = l; j < r; j++) {
-				                 if (array[j] < array[r]) {
-				                     swap(array, ++i, j);
-				                 }
-				             }
-				             swap(array, ++i, r);
-				             return i;
-				         }
+                 int patition(int[] array, int l, int r) {
+                       int i = l - 1;
+                       for (int j = l; j < r; j++) {
+                           if (array[j] < array[r]) {
+                               swap(array, ++i, j);
+                           }
+                       }
+                       swap(array, ++i, r);
+                       return i;
+                   }
 
-				       void quickSort(int[] array, int l, int r) {
-				             if (r > l) {
-				                 int flagIndex = patition(array, l, r);
-				                 quickSort(array, l, flagIndex - 1);
-				                 quickSort(array, flagIndex + 1, r);
-				             }
-
-				         }
-				""";
+                 void quickSort(int[] array, int l, int r) {
+                       if (r > l) {
+                           int flagIndex = patition(array, l, r);
+                           quickSort(array, l, flagIndex - 1);
+                           quickSort(array, flagIndex + 1, r);
+                       }
+                   }
+          """;
 	}
 
 	JLabel iLabel = new JLabel("i: ", SwingConstants.CENTER);
@@ -57,66 +61,81 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 	}
 
 	private void quickSort(int left, int right) {
+		highlightLine(12);
 		if (left <= right) {
-
+			highlightLine(13);
+			highlightLine(14);
 			int pivotIndex = partition(left, right);
 			labels[pivotIndex].setBackground(Color.GREEN);
+
 			Random random = new Random();
 			int red1 = random.nextInt(256);
 			int green1 = random.nextInt(256);
 			int blue1 = random.nextInt(256);
-			Color c1 = new Color(red1, green1, blue1);
+
 			for (int k = pivotIndex + 1; k <= right; k++) {
 				labels[k].setBackground(new Color(red1, green1, blue1));
 			}
+
+			highlightLine(15);
 			quickSort(left, pivotIndex - 1);
+
+			highlightLine(16);
 			quickSort(pivotIndex + 1, right);
 		}
 	}
 
 	private int partition(int left, int right) {
+		highlightLine(1);
 		logArea.append("Xét mảng con từ vị trí: " + left + " tới " + right + "\n");
+
+		highlightLine(2);
 		int pivot = array[right];
 		labels[right].setBackground(Color.MAGENTA);
 
+		highlightLine(2);
 		int i = left - 1;
 		iLabel.setText("i: " + i);
 		iLabel.setVisible(true);
+
+		highlightLine(3);
 		for (int j = left; j < right; j++) {
 			labels[j].setBackground(Color.YELLOW);
 			try {
 				Thread.sleep(DELAY);
+
+				highlightLine(4);
+				if (array[j] < pivot) {
+					i++;
+					logArea.append(array[j] + " < " + pivot + " => i = " + i + "\n");
+
+					if (i != j) {
+						highlightLine(5);
+						panel.setLayout(null);
+						swap(i, j);
+
+						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+						panel.revalidate();
+						panel.repaint();
+						Thread.sleep(DELAY);
+						logArea.append("Swap: " + array[i] + "<->" + array[j] + "\n");
+						labels[i].setBackground(Color.WHITE);
+					}
+				}
+				labels[j].setBackground(Color.WHITE);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
-			if (array[j] < pivot) {
-				i++;
-				logArea.append(array[j] + "<" + pivot + " => i = " + i + "\n");
-
-				if (i != j) {
-					panel.setLayout(null);
-					swap(i, j);
-
-					panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-					panel.revalidate();
-					panel.repaint();
-					try {
-						Thread.sleep(DELAY);
-					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
-					}
-					logArea.append("Đổi chỗ: " + array[i] + ":" + array[j] + "\n");
-					labels[i].setBackground(Color.WHITE);
-				}
-			}
-			labels[j].setBackground(Color.WHITE);
 		}
+
 		iLabel.setText("i: " + i);
 		iLabel.setVisible(true);
-		panel.setLayout(null);
-		swap(i + 1,right);
 
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		highlightLine(7);
+		panel.setLayout(null);
+		swap(i + 1, right);
+
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 		panel.revalidate();
 		panel.repaint();
 
@@ -128,6 +147,8 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 			throw new RuntimeException(e);
 		}
 		labels[right].setBackground(Color.WHITE);
+
+		highlightLine(8);
 		return i + 1;
 	}
 	@Override

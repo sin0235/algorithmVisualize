@@ -1,11 +1,14 @@
 package algorithmVisualize;
 
-import javax.swing.*;
 import java.awt.*;
 
 import javax.swing.SwingUtilities;
 
 public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public ShakeSortVisualizer() {
 		super();
 		panel.setLayout(null);
@@ -17,28 +20,28 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 	@Override
 	public String getCode() {
 		return """
-				int left = 0;
-				int right = n - 1;
-				int k = n - 1;
+         int left = 0;
+         int right = n - 1;
+         int k = n - 1;
 
-				while (left < right) {
-				    for (int i = right; i > left; i--) {
-				        if (a[i] < a[i - 1]) {
-				            swap(a[i], a[i - 1]);
-				            k = i;
-				        }
-				    }
-				    left = k;
+         while (left < right) {
+             for (int i = right; i > left; i--) {
+                 if (a[i] < a[i - 1]) {
+                     swap(a[i], a[i - 1]);
+                     k = i;
+                 }
+             }
+             left = k;
 
-				    for (int j = left; j < right; j++) {
-				        if (a[j] > a[j + 1]) {
-				            swap(a[j], a[j + 1]);
-				            k = j;
-				        }
-				    }
-				    right = k;
-				}
-				""";
+             for (int j = left; j < right; j++) {
+                 if (a[j] > a[j + 1]) {
+                     swap(a[j], a[j + 1]);
+                     k = j;
+                 }
+             }
+             right = k;
+         }
+         """;
 	}
 
 	@Override
@@ -49,15 +52,26 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 
 		try {
 			long startTime = System.currentTimeMillis();
+			highlightLine(1);
+			highlightLine(2);
+			highlightLine(3);
 
+			Thread.sleep(DELAY);
+
+			highlightLine(4);
 			while (left < right) {
-
+				highlightLine(5);
 				for (int j = left; j < right; j++) {
+
 					labels[j].setBackground(Color.YELLOW);
 					labels[j + 1].setBackground(Color.YELLOW);
 					Thread.sleep(500);
+
+					highlightLine(6);
 					if (array[j] > array[j + 1]) {
-						logArea.append("Đổi chỗ: " + array[j] + "<->" + array[j + 1] + "\n");panel.setLayout(null);
+						highlightLine(7);
+						logArea.append("Đổi chỗ: " + array[j] + "<->" + array[j + 1] + "\n");
+						panel.setLayout(null);
 						swap(j, j + 1);
 
 						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
@@ -71,21 +85,26 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 
 					labels[j].setBackground(originalColor);
 					labels[j + 1].setBackground(originalColor);
-
+					highlightLine(5);
 				}
 
 				for (int r = k + 1; r <= right; r++) {
 					labels[r].setBackground(Color.GREEN);
 				}
+				highlightLine(10);
 				right = k;
 				Thread.sleep(DELAY + 100);
 				labels[k].setForeground(Color.BLACK);
+
+				highlightLine(12);
 				for (int i = right; i > left; i--) {
 					labels[i].setBackground(Color.YELLOW);
 					labels[i - 1].setBackground(Color.YELLOW);
 					Thread.sleep(DELAY);
 
+					highlightLine(13);
 					if (array[i] < array[i - 1]) {
+						highlightLine(14);
 						logArea.append("Đổi chỗ: " + array[i] + "<->" + array[i - 1] + "\n");
 						panel.setLayout(null);
 						swap(i - 1, i);
@@ -96,18 +115,20 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 						labels[k].setForeground(Color.BLACK);
 						k = i;
 						labels[k].setForeground(Color.MAGENTA);
-
 					}
 					labels[i].setBackground(originalColor);
 					labels[i - 1].setBackground(originalColor);
+					highlightLine(12);
 				}
 
 				for (int l = k - 1; l >= left; l--) {
 					labels[l].setBackground(Color.GREEN);
 				}
+				highlightLine(17);
 				left = k;
 				Thread.sleep(700);
 				labels[k].setForeground(Color.BLACK);
+				highlightLine(4);
 			}
 			labels[k].setBackground(Color.GREEN);
 			long endTime = System.currentTimeMillis();
@@ -134,8 +155,6 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 		int startY = labels[i].getLocation().y;
 		int endX = labels[j].getLocation().x;
 		int endY = labels[j].getLocation().y;
-		Dimension originalSize = labels[i].getSize();
-
 		for (int step = 0; step <= STEPS; step++) {
 			double progress = (double) step / STEPS;
 

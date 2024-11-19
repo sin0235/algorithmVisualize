@@ -17,16 +17,17 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
     @Override
     public String getCode() {
         return """
-                for (int i = 1; i < array.length; i++) {
-                    int key = array[i];
-                    int j = i - 1;
-                    while (j >= 0 && array[j] > key) {
-                        array[j + 1] = array[j];
-                        j = j - 1;
-                    }
-                    array[j + 1] = key;
+            for (int i = 1; i < array.length; i++) {
+                int key = array[i]
+                int j = i - 1;
+                
+                while (j >= 0 && array[j] > key) {
+                    array[j + 1] = array[j];
+                    j = j - 1;
                 }
-                """;
+                array[j + 1] = key;
+            }
+            """;
     }
 
     @Override
@@ -37,7 +38,12 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
             long startTime = System.currentTimeMillis();
 
             for (int i = 1; i < len; i++) {
+                highlightLine(1);
+                Thread.sleep(300);
+
+                highlightLine(2);
                 int tmp = array[i];
+                highlightLine(3);
                 int j = i - 1;
 
                 JLabel tempLabel = new JLabel(String.valueOf(tmp));
@@ -52,31 +58,34 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
                 panel.setComponentZOrder(tempLabel, 0);
                 tempLabel.setLocation(labels[i].getLocation());
                 labels[i].setText("");
-				delay();
+                delay();
                 panel.revalidate();
                 panel.repaint();
 
-
                 while (j >= 0 && array[j] > tmp) {
+                    highlightLine(5);
+                    Thread.sleep(300);
+
                     logArea.append("Dời " + array[j] + " từ index " + j + " sang index " + (j + 1) + "\n");
 
-
+                    highlightLine(6);
                     animateShift(labels[j], labels[j + 1].getX(), labels[j + 1].getY());
-
                     array[j + 1] = array[j];
-
                     labels[j + 1].setText(String.valueOf(array[j]));
                     labels[j].setText("");
                     sleep(200);
+
+                    highlightLine(7);
                     j--;
+                    Thread.sleep(300);
                 }
 
-
+                highlightLine(9);
                 array[j + 1] = tmp;
                 logArea.append("Chèn thành công " + tmp + " vào vị trí index " + (j + 1) + "\n");
 
                 animateShift(tempLabel, labels[j + 1].getX(), labels[j + 1].getY());
-				sleep(700);
+                sleep(700);
                 labels[j + 1].setText(String.valueOf(tmp));
                 tempLabel.setVisible(false);
                 panel.remove(tempLabel);
@@ -87,8 +96,13 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
                 panel.repaint();
 
                 labels[j + 1].setBackground(originalColor);
-
             }
+
+            SwingUtilities.invokeLater(() -> {
+                if (currentHighlight != null) {
+                    codeArea.getHighlighter().removeHighlight(currentHighlight);
+                }
+            });
 
             for (JLabel label : labels) {
                 label.setBackground(Color.GREEN);
@@ -101,6 +115,7 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
             e.printStackTrace();
         }
     }
+
 
     private void animateShift(JLabel label, int targetX, int targetY) {
         int startX = label.getX();

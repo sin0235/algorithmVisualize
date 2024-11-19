@@ -10,6 +10,11 @@ import java.awt.FlowLayout;
 
 public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public SelectionSortVisualize() {
 		super();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));

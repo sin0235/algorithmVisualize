@@ -4,15 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.text.*;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("all")
 public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
-	private final DefaultHighlighter.DefaultHighlightPainter highlightPainter;
-	private Object currentHighlight;
 
 	public BinaryInsertionSortVisualizer() {
 		super();
-		highlightPainter = new DefaultHighlighter.DefaultHighlightPainter(new Color(255, 255, 200));
-		currentHighlight = null;
+
 
 	}
 
@@ -38,26 +35,7 @@ public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
              }
              """;
 	}
-@Override
-	protected void highlightLine(int lineNumber) {
-		SwingUtilities.invokeLater(() -> {
-			try {
-				if (currentHighlight != null) {
-					codeArea.getHighlighter().removeHighlight(currentHighlight);
-				}
 
-				int start = codeArea.getLineStartOffset(lineNumber - 1);
-				int end = codeArea.getLineEndOffset(lineNumber - 1);
-
-				currentHighlight = codeArea.getHighlighter().addHighlight(start, end, highlightPainter);
-
-				Rectangle rect = codeArea.modelToView(start);
-				codeArea.scrollRectToVisible(rect);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		});
-	}
 
 	public void visualize() {
 		int len = array.length;

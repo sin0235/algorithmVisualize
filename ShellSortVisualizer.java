@@ -5,6 +5,10 @@ import java.awt.*;
 import javax.swing.*;
 
 public class ShellSortVisualizer extends AlgorithmSortVisualizer {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	JLabel gapLabel = createCircleLabel("Gap");
 	JLabel compareLabel = createCircleLabel("CMP:");
 
@@ -26,20 +30,20 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 	@Override
 	public String getCode() {
 		return """
-				int gap = n / 2;
-				while (gap > 0) {
-				    for (int i = gap; i < n; i++) {
-				        int temp = a[i];
-				        int j = i;
-				        while (j >= gap && a[j - gap] > temp) {
-				            a[j] = a[j - gap];
-				            j -= gap;
-				        }
-				        a[j] = temp;
-				    }
-				    gap /= 2;
-				}
-				""";
+          int gap = n / 2;
+          while (gap > 0) {
+              for (int i = gap; i < n; i++) {
+                  int temp = a[i];
+                  int j = i;
+                  while (j >= gap && a[j - gap] > temp) {
+                      a[j] = a[j - gap];
+                      j -= gap;
+                  }
+                  a[j] = temp;
+              }
+              gap /= 2;
+          }
+          """;
 	}
 
 	@Override
@@ -52,24 +56,30 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 		try {
 			long startTime = System.currentTimeMillis();
 
+			highlightLine(1);
 			for (int gap = len / 2; gap > 0; gap /= 2) {
 				gapLabel.setText("Gap: " + gap);
 				gapLabel.setBackground(new Color(0, 150, 0));
 				Thread.sleep(500);
 				gapLabel.setBackground(Color.BLACK);
 
+				highlightLine(3);
 				for (int j = gap; j < len; j++) {
 					int value = array[j];
 					int k = j;
+					highlightLine(4);
 					highlightLabel(labels[j], Color.YELLOW, 200);
 
+					highlightLine(5);
 					compareLabel.setText("Compare: " + array[k] + " : " +
 							(k >= gap ? array[k - gap] : "N/A"));
 					compareLabel.setBackground(new Color(100, 100, 255));
 
 					logArea.append("Xét phần tử: " + array[j] + " tại vị trí " + j + "\n");
 
+					highlightLine(6);
 					while (k >= gap && value < array[k - gap]) {
+						highlightLine(7);
 						highlightLabel(labels[k], Color.RED, 100);
 						highlightLabel(labels[k - gap], Color.WHITE, 100);
 						delay();
@@ -78,14 +88,15 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 
 						swap(k, k - gap);
 
-
-
 						Thread.sleep(DELAY);
 						resetLabelColor(labels[k]);
 						resetLabelColor(labels[k - gap]);
-						k -= gap;
 
+						highlightLine(8);
+						k -= gap;
 					}
+
+					highlightLine(10);
 					Thread.sleep(DELAY);
 					array[k] = value;
 					labels[k].setText(String.valueOf(array[k]));
@@ -101,6 +112,8 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 
 					resetLabelColor(labels[k]);
 				}
+
+				highlightLine(12);
 			}
 
 			for (JLabel label : labels) {

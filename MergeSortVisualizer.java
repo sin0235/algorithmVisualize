@@ -9,10 +9,15 @@ import java.util.Arrays;
 
 public class MergeSortVisualizer extends AlgorithmSortVisualizer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public MergeSortVisualizer() {
 		super();
 	}
-
+@Override
 	public String getCode() {
 		return """
 				        void merge(int[] arr, int l, int r, int m) {
@@ -55,96 +60,107 @@ public class MergeSortVisualizer extends AlgorithmSortVisualizer {
 	}
 
 	private void mergeSort(int[] arr, int left, int right) {
-		Random random = new Random();
-		int red1 = random.nextInt(256);
-		int green1 = random.nextInt(256);
-		int blue1 = random.nextInt(256);
-		Color c1 = new Color(red1, green1, blue1);
-
-		int red2 = random.nextInt(256);
-		int green2 = random.nextInt(256);
-		int blue2 = random.nextInt(256);
-		Color c2 = new Color(red2, green2, blue2);
-
-		highlightLine(1);
+		highlightLine(28);
 		if (left < right) {
 			try {
 				Thread.sleep(DELAY);
+				int mid = (left + right) / 2;
+
+				Random random = new Random();
+				Color leftColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+				Color rightColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
+
+				highlightLine(29);
+				for (int i = left; i < mid + 1; i++) {
+					labels[i].setBackground(leftColor);
+				}
+				Thread.sleep(DELAY);
+
+				highlightLine(30);
+				for (int j = mid + 1; j <= right; j++) {
+					labels[j].setBackground(rightColor);
+				}
+				Thread.sleep(DELAY);
+
+				mergeSort(arr, left, mid);
+				logArea.append("Merge thành công 1 mảng con\n");
+				mergeSort(arr, mid + 1, right);
+
+				highlightLine(31);
+				merge(arr, left, mid, right);
+				logArea.append("Merge thành công 1 mảng con\n");
+
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
-			int mid = (left + right) / 2;
-			for (int i = left; i < mid + 1; i++) {
-				labels[i].setBackground(c1);
-
-			}
-			highlightLine(2);
-			for (int j = mid + 1; j <= right; j++) {
-				labels[j].setBackground(c2);
-			}
-
-			mergeSort(arr, left, mid);
-			mergeSort(arr, mid + 1, right);
-
-			highlightLine(3);
-			merge(arr, left, mid, right);
 		}
 	}
 
 	private void merge(int[] arr, int left, int mid, int right) {
-		highlightLine(6);
-		for (int i = left; i <= right; i++) {
-			labels[i].setBackground(Color.WHITE);
-		}
-		int[] leftArray = Arrays.copyOfRange(arr, left, mid + 1);
+		try {
+			highlightLine(1);
+			Thread.sleep(DELAY);
+			for (int i = left; i <= right; i++) {
+				labels[i].setBackground(Color.WHITE);
+			}
 
-		int[] rightArray = Arrays.copyOfRange(arr, mid + 1, right + 1);
-		Random random = new Random();
-		int r = random.nextInt(256);
-		int gr = random.nextInt(256);
-		int bl = random.nextInt(256);
-		int i = 0, j = 0, k = left;
-		Color newColor = new Color(r, gr, bl);
-		while (i < leftArray.length && j < rightArray.length) {
-			if (leftArray[i] <= rightArray[j]) {
+			highlightLine(2);
+			int[] leftArray = Arrays.copyOfRange(arr, left, mid + 1);
+			Thread.sleep(DELAY);
+
+			highlightLine(3);
+			int[] rightArray = Arrays.copyOfRange(arr, mid + 1, right + 1);
+			Thread.sleep(DELAY);
+
+			Random random = new Random();
+			Color mergedColor = new Color(
+					random.nextInt(256),
+					random.nextInt(256),
+					random.nextInt(256)
+			);
+
+			int i = 0, j = 0, k = left;
+
+			highlightLine(13);
+			while (i < leftArray.length && j < rightArray.length) {
+				highlightLine(14);
+				if (leftArray[i] <= rightArray[j]) {
+					highlightLine(15);
+					arr[k] = leftArray[i];
+					updateLabel(k, leftArray[i], mergedColor);
+					i++;
+				} else {
+					highlightLine(17);
+					arr[k] = rightArray[j];
+					updateLabel(k, rightArray[j], mergedColor);
+					j++;
+				}
+				k++;
+				Thread.sleep(DELAY);
+			}
+
+			highlightLine(20);
+			while (i < leftArray.length) {
 				arr[k] = leftArray[i];
-				updateLabel(k, leftArray[i], newColor);
+				updateLabel(k, leftArray[i], mergedColor);
 				i++;
-			} else {
+				k++;
+				Thread.sleep(DELAY);
+			}
+
+			highlightLine(23);
+			while (j < rightArray.length) {
 				arr[k] = rightArray[j];
-				updateLabel(k, rightArray[j], newColor);
+				updateLabel(k, rightArray[j], mergedColor);
 				j++;
-			}
-			k++;
-			try {
+				k++;
 				Thread.sleep(DELAY);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
-		}
-		while (i < leftArray.length) {
-			arr[k] = leftArray[i];
-			updateLabel(k, leftArray[i], newColor);
-			i++;
-			k++;
-			try {
-				Thread.sleep(DELAY);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		while (j < rightArray.length) {
-			arr[k] = rightArray[j];
-			updateLabel(k, rightArray[j], newColor);
-			j++;
-			k++;
-			try {
-				Thread.sleep(DELAY);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
+
 
 	private void updateLabel(int index, int value, Color color) {
 		labels[index].setText(String.valueOf(value));

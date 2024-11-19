@@ -2,12 +2,15 @@ package algorithmVisualize;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LinearSearchVisualize extends SearchAlgorithmsVisualize {
 
-    public LinearSearchVisualize(){
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public LinearSearchVisualize(){
         super();
     }
 

@@ -7,7 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.border.EmptyBorder;
 
 public abstract class SearchAlgorithmsVisualize extends JFrame {
-    protected JTextField inputField, searchField;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected JTextField inputField, searchField;
     protected JButton searchButton;
     protected JPanel arrayPanel;
     protected JLabel resultLabel;
@@ -179,7 +183,12 @@ public abstract class SearchAlgorithmsVisualize extends JFrame {
         ActionMap actionMap = searchField.getActionMap();
         inputMap.put(KeyStroke.getKeyStroke("ENTER"), "search");
         actionMap.put("search", new AbstractAction() {
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
             public void actionPerformed(ActionEvent e) {
                 searchButton.doClick();
             }
@@ -250,7 +259,12 @@ public abstract class SearchAlgorithmsVisualize extends JFrame {
     }
 
     private class WrapLayout extends FlowLayout {
-        public WrapLayout(int align, int hgap, int vgap) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public WrapLayout(int align, int hgap, int vgap) {
             super(align, hgap, vgap);
         }
 
