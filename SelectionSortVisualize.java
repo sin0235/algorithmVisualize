@@ -12,7 +12,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 
 	public SelectionSortVisualize() {
 		super();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30)); // Initial FlowLayout
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 		minLabel.setOpaque(true);
 		minLabel.setBackground(Color.BLUE);
 		minLabel.setPreferredSize(new Dimension(100, 70));
-		minLabel.setFont(new Font("Roboto", Font.BOLD, 17));
+		minLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		minLabel.setForeground(Color.WHITE);
 		panel.add(minLabel);
 
@@ -75,7 +75,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 
 				if (minIndex != i) {
 					logArea.append("Min: " + array[minIndex] + " ");
-					logArea.append("Swapping: " + array[i] + " and " + array[minIndex] + "\n");
+					logArea.append("Swapping: " + array[i] + "<->" + array[minIndex] + "\n");
 
 					panel.setLayout(null);
 					labels[i].setBackground(originalColor);
@@ -97,7 +97,7 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 			labels[array.length - 1].setBackground(Color.GREEN);
 
 			long endTime = System.currentTimeMillis();
-			logArea.append("Algorithm completed in: " + (endTime - startTime) + " ms\n");
+			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

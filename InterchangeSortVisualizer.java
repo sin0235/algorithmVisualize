@@ -48,7 +48,7 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 
 					if (array[i] > array[j]) {
 						highlightLine(3);
-						logArea.append("Swapping: " + array[i] + " and " + array[j] + "\n");
+						logArea.append("Swapping: " + array[i] + "<->" + array[j] + "\n");
 						resetLabelColor(i, j);
 						panel.setLayout(null);
 						swap(i, j);
@@ -66,7 +66,7 @@ public class InterchangeSortVisualizer extends AlgorithmSortVisualizer {
 			labels[array.length - 1].setBackground(Color.GREEN);
 
 			long endTime = System.currentTimeMillis();
-			logArea.append("Algorithm completed in: " + (endTime - startTime) + " ms\n");
+			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();

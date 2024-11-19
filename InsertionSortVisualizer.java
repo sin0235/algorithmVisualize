@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import static java.lang.Thread.sleep;
 
-@SuppressWarnings("ALL")
+@SuppressWarnings("all")
 public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
 
     public InsertionSortVisualizer() {
@@ -41,7 +41,7 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
                 int j = i - 1;
 
                 JLabel tempLabel = new JLabel(String.valueOf(tmp));
-                tempLabel.setFont(new Font("Roboto", Font.BOLD, 18));
+                tempLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
                 tempLabel.setOpaque(true);
                 tempLabel.setBackground(Color.YELLOW);
                 tempLabel.setForeground(Color.RED);
@@ -105,21 +105,18 @@ public class InsertionSortVisualizer extends AlgorithmSortVisualizer {
     private void animateShift(JLabel label, int targetX, int targetY) {
         int startX = label.getX();
         int startY = label.getY();
-        int totalSteps = 10;
 
-        for (int step = 0; step <= totalSteps; step++) {
-            final int x = startX + (int) ((targetX - startX) * (step / (double) totalSteps));
-            final int y = startY + (int) ((targetY - startY) * (step / (double) totalSteps));
+        for (int step = 0; step <= 10; step++) {
+            final int x = startX + (int) ((targetX - startX) * (step / 10.0));
+            final int y = startY + (int) ((targetY - startY) * (step / 10.0));
+            SwingUtilities.invokeLater(() -> label.setLocation(x, y));
 
             try {
-                SwingUtilities.invokeLater(() -> label.setLocation(x, y));
-                Thread.sleep(30); // Reduced sleep time for smoother animation
+                sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-        // Ensure final position is exactly at target
         label.setLocation(targetX, targetY);
     }
 

@@ -12,7 +12,7 @@ public class Menu extends JFrame {
     private static final Color GRADIENT_END = new Color(109, 213, 237);
     private static final Color BUTTON_HOVER = new Color(52, 152, 219);
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 28);
-    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 16);
+    private static final Font BUTTON_FONT = new Font("Segoe UI", Font.PLAIN, 22);
 
     public Menu() {
         setTitle("Algorithm Visualizer");
@@ -20,10 +20,9 @@ public class Menu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(20, 20));
-        setUndecorated(true); // Remove window decorations
+        setUndecorated(true);
         setShape(new RoundRectangle2D.Double(0, 0, 600, 400, 20, 20));
-        
-        // Custom background panel with gradient
+
         JPanel backgroundPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -36,16 +35,14 @@ public class Menu extends JFrame {
             }
         };
         backgroundPanel.setLayout(new BorderLayout(20, 20));
-        
-        // Title Panel
+
         JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         titlePanel.setOpaque(false);
         JLabel titleLabel = new JLabel("Algorithm Visualizer");
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(Color.WHITE);
         titlePanel.add(titleLabel);
-        
-        // Close button
+
         JButton closeButton = createIconButton("×");
         closeButton.addActionListener(e -> {
             int choice = JOptionPane.showConfirmDialog(this,
@@ -62,8 +59,7 @@ public class Menu extends JFrame {
         headerPanel.setOpaque(false);
         headerPanel.add(titlePanel, BorderLayout.CENTER);
         headerPanel.add(closeButton, BorderLayout.EAST);
-        
-        // Button Panel
+
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 20, 20));
         buttonPanel.setOpaque(false);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
@@ -76,15 +72,12 @@ public class Menu extends JFrame {
         
         buttonPanel.add(sortButton);
         buttonPanel.add(searchButton);
-        
-        // Add components to background panel
+
         backgroundPanel.add(headerPanel, BorderLayout.NORTH);
         backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
-        
-        // Add background panel to frame
+
         add(backgroundPanel);
-        
-        // Make window draggable
+
         addWindowDragability();
         
         setVisible(true);

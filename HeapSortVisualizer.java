@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.geom.*;
 
 public class HeapSortVisualizer extends JFrame {
-    // Constants for styling
+
     private static final Color BACKGROUND_COLOR = new Color(240, 245, 255);
     private static final Color PRIMARY_COLOR = new Color(41, 128, 185);
     private static final Color ACCENT_COLOR = new Color(52, 152, 219);
@@ -23,16 +23,13 @@ public class HeapSortVisualizer extends JFrame {
     private JLabel[] labels;
     private int[] array;
     private int arraySize;
-    private JProgressBar progressBar;
-    private JLabel statusLabel;
+
 
     public HeapSortVisualizer() {
-        setTitle("Heap Sort Visualizer");
+        setTitle("Algorithm Visualization");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
-        
-        // Main container with gradient background
         JPanel mainContainer = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -48,27 +45,23 @@ public class HeapSortVisualizer extends JFrame {
         mainContainer.setLayout(new BorderLayout(20, 20));
         mainContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Header Panel
         JPanel headerPanel = createHeaderPanel();
         mainContainer.add(headerPanel, BorderLayout.NORTH);
 
-        // Center Panel containing Tree and Array
         JPanel centerPanel = new JPanel(new BorderLayout(20, 0));
         centerPanel.setOpaque(false);
 
-        // Tree Panel with custom styling
         treePanel = createTreePanel();
+
         centerPanel.add(treePanel, BorderLayout.CENTER);
 
-        // Array Panel
-        JPanel arrayContainer = new JPanel(new BorderLayout(10, 10));
+        JPanel arrayContainer = new JPanel(new BorderLayout(10, 20));
         arrayContainer.setOpaque(false);
         arrayContainer.setPreferredSize(new Dimension(200, 0));
         centerPanel.add(arrayContainer, BorderLayout.EAST);
 
         mainContainer.add(centerPanel, BorderLayout.CENTER);
 
-        // Bottom Panel with Log and Status
         JPanel bottomPanel = createBottomPanel();
         mainContainer.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -80,32 +73,26 @@ public class HeapSortVisualizer extends JFrame {
         JPanel headerPanel = new JPanel(new BorderLayout(15, 15));
         headerPanel.setOpaque(false);
 
-        // Title
         JLabel titleLabel = new JLabel("Heap Sort Visualizer", SwingConstants.CENTER);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(PRIMARY_COLOR);
         headerPanel.add(titleLabel, BorderLayout.NORTH);
 
-        // Input Panel
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 5));
         inputPanel.setOpaque(false);
 
         JLabel inputLabel = new JLabel("Nhập dữ liệu (phân cách bởi dấu phẩy):");
         inputLabel.setFont(LABEL_FONT);
         inputField = createStyledTextField(20);
-        JButton startButton = createStyledButton("Bắt đầu");
-        JButton randomButton = createStyledButton("Tạo ngẫu nhiên");
+        JButton startButton = createStyledButton("Visualize");
 
         inputPanel.add(inputLabel);
         inputPanel.add(inputField);
         inputPanel.add(startButton);
-        inputPanel.add(randomButton);
 
         headerPanel.add(inputPanel, BorderLayout.CENTER);
 
-        // Action Listeners
         startButton.addActionListener(e -> onStart());
-        randomButton.addActionListener(e -> generateRandomData());
 
         return headerPanel;
     }
@@ -132,7 +119,6 @@ public class HeapSortVisualizer extends JFrame {
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setOpaque(false);
 
-        // Log Area
         logArea = new JTextArea(6, 40);
         logArea.setFont(LABEL_FONT);
         logArea.setEditable(false);
@@ -143,20 +129,8 @@ public class HeapSortVisualizer extends JFrame {
         scrollPane.setBorder(createStyledBorder("Thực thi"));
         bottomPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Status Panel
         JPanel statusPanel = new JPanel(new BorderLayout(10, 0));
         statusPanel.setOpaque(false);
-        
-        statusLabel = new JLabel("Sẵn sàng");
-        statusLabel.setFont(LABEL_FONT);
-        
-        progressBar = new JProgressBar(0, 100);
-        progressBar.setStringPainted(true);
-        progressBar.setString("0%");
-        progressBar.setPreferredSize(new Dimension(200, 20));
-
-        statusPanel.add(statusLabel, BorderLayout.WEST);
-        statusPanel.add(progressBar, BorderLayout.EAST);
         
         bottomPanel.add(statusPanel, BorderLayout.SOUTH);
 
@@ -166,14 +140,12 @@ public class HeapSortVisualizer extends JFrame {
     private void drawTree(Graphics2D g, int index, int x, int y, int xOffset) {
         if (index >= arraySize) return;
 
-        // Draw node
         g.setColor(NODE_COLOR);
         g.fillOval(x - 30, y - 30, 60, 60);
         g.setColor(NODE_BORDER);
         g.setStroke(new BasicStroke(2));
         g.drawOval(x - 30, y - 30, 60, 60);
 
-        // Draw value
         g.setFont(NODE_FONT);
         String text = String.valueOf(array[index]);
         FontMetrics fm = g.getFontMetrics();
@@ -181,7 +153,6 @@ public class HeapSortVisualizer extends JFrame {
         int textY = y + fm.getAscent() / 2 - 2;
         g.drawString(text, textX, textY);
 
-        // Draw connections
         g.setColor(LINE_COLOR);
         g.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
@@ -261,33 +232,13 @@ public class HeapSortVisualizer extends JFrame {
         );
     }
 
-    private void generateRandomData() {
-        int size = 7; // Số phần tử ngẫu nhiên
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < size; i++) {
-            sb.append(1 + (int)(Math.random() * 99));
-            if (i < size - 1) sb.append(", ");
-        }
-        inputField.setText(sb.toString());
-    }
 
-    private void updateProgress(int progress) {
-        progressBar.setValue(progress);
-        progressBar.setString(progress + "%");
-    }
 
-    private void updateStatus(String status) {
-        statusLabel.setText(status);
-        log(status);
-    }
-
-    // Các phương thức xử lý thuật toán giữ nguyên
     private void onStart() {
         array = parseInput();
         if (array.length > 0) {
             arraySize = array.length;
             initializeArrayLabels();
-            updateStatus("Bắt đầu sắp xếp...");
             new Thread(this::heapSort).start();
         }
     }
@@ -312,12 +263,12 @@ public class HeapSortVisualizer extends JFrame {
 
     private void initializeArrayLabels() {
 		JPanel arrayPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-		arrayPanel.setBorder(BorderFactory.createTitledBorder("Array Representation"));
+		arrayPanel.setBorder(BorderFactory.createTitledBorder("Trực quan hóa thuật toán"));
 		labels = new JLabel[array.length];
 		for (int i = 0; i < array.length; i++) {
 			labels[i] = new JLabel(String.valueOf(array[i]));
-			labels[i].setFont(new Font("Roboto", Font.BOLD, 18));
-			labels[i].setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+			labels[i].setFont(new Font("Segoe UI", Font.BOLD, 18));
+			labels[i].setBorder(BorderFactory.createLineBorder(Color.CYAN));
 			labels[i].setPreferredSize(new Dimension(50, 50));
 			labels[i].setOpaque(true);
 			labels[i].setBackground(Color.LIGHT_GRAY);

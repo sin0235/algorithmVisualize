@@ -19,37 +19,34 @@ public class RadixSortVisualizer extends JFrame {
 	public Color originalColor = new Color(92, 219, 149);
 
 	public RadixSortVisualizer() {
-		setTitle("Radix Sort Visualizer");
+		setTitle("Sort Algorithm Visualizer");
 		setSize(1200, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
 		getContentPane().setBackground(new Color(245, 245, 245));
 
-		// Input Panel
 		JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		inputField = new JTextField(25);
 		startButton = new JButton("Start");
-		startButton.setFont(new Font("Arial", Font.BOLD, 14));
+		startButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		startButton.setBackground(new Color(72, 191, 227));
 		startButton.setForeground(Color.WHITE);
 		startButton.setFocusPainted(false);
 		inputPanel.setBackground(new Color(245, 245, 245));
 
-		JLabel instructionLabel = new JLabel("Enter numbers (comma-separated): ");
-		instructionLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+		JLabel instructionLabel = new JLabel("Nhập dữ liệu đầu vào cách nhau bởi dấu phẩy: ");
+		instructionLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		inputPanel.add(instructionLabel);
 		inputPanel.add(inputField);
 		inputPanel.add(startButton);
 		add(inputPanel, BorderLayout.NORTH);
 
-		// Array Panel
 		arrayPanel = new JPanel();
 		arrayPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		arrayPanel.setBackground(new Color(255, 255, 255));
-		arrayPanel.setBorder(BorderFactory.createTitledBorder("Array Visualization"));
+		arrayPanel.setBorder(BorderFactory.createTitledBorder("Trực quan hóa thuật toán"));
 		add(arrayPanel, BorderLayout.CENTER);
 
-		// Queue Panel
 		queuePanel = new JPanel(new GridLayout(10, 1, 10, 10));
 		queuePanel.setPreferredSize(new Dimension(400, 500));
 		queuePanel.setBorder(BorderFactory.createTitledBorder("Digit Queues"));
@@ -85,14 +82,13 @@ public class RadixSortVisualizer extends JFrame {
 			}
 
 			expLabel = new JLabel("");
-			expLabel.setFont(new Font("Arial", Font.BOLD, 16));
+			expLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
 			expLabel.setForeground(Color.RED);
 			add(expLabel, BorderLayout.SOUTH);
 
 			arrayPanel.revalidate();
 			arrayPanel.repaint();
 
-			// Adding Queue Rows
 			for (int i = 0; i < 10; i++) {
 				JPanel queueRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
 				queueRow.setBorder(BorderFactory.createTitledBorder("Queue " + i));
@@ -103,7 +99,7 @@ public class RadixSortVisualizer extends JFrame {
 			queuePanel.repaint();
 
 		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(this, "Please enter valid integers separated by commas.");
+			JOptionPane.showMessageDialog(this, "Lỗi dữ liệu đầu vào, chỉ nhập số cách nhau bởi dấu phẩy");
 		}
 	}
 
@@ -113,7 +109,7 @@ public class RadixSortVisualizer extends JFrame {
 		label.setBackground(originalColor);
 		label.setPreferredSize(new Dimension(60, 50));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setFont(new Font("Arial", Font.BOLD, 16));
+		label.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		return label;
 	}
 
@@ -172,7 +168,7 @@ public class RadixSortVisualizer extends JFrame {
 		queueLabel.setBackground(new Color(255, 204, 153));
 		queueLabel.setPreferredSize(new Dimension(60, 40));
 		queueLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		queueLabel.setFont(new Font("Arial", Font.BOLD, 14));
+		queueLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		queueRow.add(queueLabel);
 		queueRow.revalidate();
 		queueRow.repaint();

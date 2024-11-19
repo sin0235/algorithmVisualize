@@ -42,7 +42,7 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 		iLabel.setOpaque(true);
 		iLabel.setBackground(Color.PINK);
 		iLabel.setPreferredSize(new Dimension(100, 70));
-		iLabel.setFont(new Font("Roboto", Font.BOLD, 17));
+		iLabel.setFont(new Font("Segoe UI", Font.BOLD, 17));
 		iLabel.setForeground(Color.BLACK);
 		panel.add(iLabel);
 		try {
@@ -136,55 +136,57 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 		array[i] = array[j];
 		array[j] = temp;
 
-
 		labels[i].setBackground(Color.ORANGE);
 		labels[j].setBackground(Color.ORANGE);
 
-		int steps = 20;
-		int delay = 50;
+		final int STEPS = 20;
+		final int ANIMATION_DELAY = 25;
+		final int MAX_SCALE = 8;
 
-		int startX = labels[i].getLocation().x;
-		int startY = labels[i].getLocation().y;
-		int endX = labels[j].getLocation().x;
-		int endY = labels[j].getLocation().y;
+		Point startPos1 = labels[i].getLocation();
+		Point startPos2 = labels[j].getLocation();
 		Dimension originalSize = labels[i].getSize();
 
+		for (int step = 0; step <= STEPS; step++) {
+			double progress = (double) step / STEPS;
+			int dx = (int) ((startPos2.x - startPos1.x) * progress);
+			int dy = (int) ((startPos2.y - startPos1.y) * progress);
 
-		int maxScale = 10;
+			double scaleProgress = Math.sin(progress * Math.PI) * MAX_SCALE;
 
-		for (int step = 0; step <= steps; step++) {
-			// Calculate movement and scale changes
-			int dx = (endX - startX) * step / steps;
-			int dy = (endY - startY) * step / steps;
+			labels[i].setLocation(startPos1.x + dx, startPos1.y + dy);
+			labels[j].setLocation(startPos2.x - dx, startPos2.y - dy);
 
-			int scale = maxScale - maxScale * step / steps;
-			labels[i].setSize(originalSize.width + scale, originalSize.height + scale);
-			labels[j].setSize(originalSize.width - scale, originalSize.height - scale);
-			labels[i].setLocation(startX + dx, startY - dy);
-			labels[j].setLocation(endX - dx, endY + dy);
-
-
+			labels[i].setSize(
+					originalSize.width + (int)scaleProgress,
+					originalSize.height + (int)scaleProgress
+			);
+			labels[j].setSize(
+					originalSize.width - (int)scaleProgress,
+					originalSize.height - (int)scaleProgress
+			);
 
 			panel.revalidate();
 			panel.repaint();
 
 			try {
-				Thread.sleep(50);
+				Thread.sleep(ANIMATION_DELAY);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 		}
+
 		String tempText = labels[i].getText();
 		labels[i].setText(labels[j].getText());
 		labels[j].setText(tempText);
-		labels[i].setLocation(endX, endY);
-		labels[j].setLocation(startX, startY);
+
+		labels[i].setLocation(startPos2);
+		labels[j].setLocation(startPos1);
 		labels[i].setSize(originalSize);
 		labels[j].setSize(originalSize);
 
 		panel.revalidate();
 		panel.repaint();
-
 	}
 	public static void execute() {
 		SwingUtilities.invokeLater(() -> new QuickSortVisualizer().setVisible(true));

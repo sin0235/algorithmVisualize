@@ -48,7 +48,7 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 					if (array[j] > array[j + 1]) {
 						resetLabelColor(j, j + 1);
 						highlightLine(3);
-						logArea.append("Swapping: " + array[j] + " and " + array[j + 1] + "\n");
+						logArea.append("Swapping: " + array[j] + "<->" + array[j + 1] + "\n");
 						panel.setLayout(null);
 						swap(j, j + 1);
 						
@@ -67,7 +67,7 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 			labels[0].setBackground(Color.GREEN);
 
 			long endTime = System.currentTimeMillis();
-			logArea.append("Algorithm finished in: " + (endTime - startTime) + " ms\n");
+			logArea.append("Thuật toán kết thúc sau: " + (endTime - startTime) + " ms\n");
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -57,7 +57,7 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 					labels[j + 1].setBackground(Color.YELLOW);
 					Thread.sleep(500);
 					if (array[j] > array[j + 1]) {
-						logArea.append("Đổi chỗ: " + array[j] + " và " + array[j + 1] + "\n");panel.setLayout(null);
+						logArea.append("Đổi chỗ: " + array[j] + "<->" + array[j + 1] + "\n");panel.setLayout(null);
 						swap(j, j + 1);
 
 						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
@@ -86,7 +86,7 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 					Thread.sleep(DELAY);
 
 					if (array[i] < array[i - 1]) {
-						logArea.append("Đổi chỗ: " + array[i] + " và " + array[i - 1] + "\n");
+						logArea.append("Đổi chỗ: " + array[i] + "<->" + array[i - 1] + "\n");
 						panel.setLayout(null);
 						swap(i - 1, i);
 						panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));
@@ -126,9 +126,9 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 		labels[i].setBackground(Color.ORANGE);
 		labels[j].setBackground(Color.ORANGE);
 
-		final int STEPS = 25; // Fewer, smoother steps
-		final int DELAY = 10; // Faster update
-		final int ARC_HEIGHT = 100; // More dramatic arc
+		final int STEPS = 25;
+		final int DELAY = 10;
+		final int ARC_HEIGHT = 100;
 
 		int startX = labels[i].getLocation().x;
 		int startY = labels[i].getLocation().y;
@@ -139,7 +139,6 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 		for (int step = 0; step <= STEPS; step++) {
 			double progress = (double) step / STEPS;
 
-			// Enhanced cubic ease-in-out for ultra-smooth motion
 			double smoothProgress = progress < 0.5
 					? 4 * progress * progress * progress
 					: 1 - Math.pow(-2 * progress + 2, 3) / 2;
@@ -161,7 +160,6 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 			}
 		}
 
-		// Reset labels
 		labels[i].setBackground(originalColor);
 		labels[j].setBackground(originalColor);
 		labels[i].setLocation(startX, startY);
