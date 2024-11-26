@@ -9,6 +9,7 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 	public ShakeSortVisualizer() {
 		super();
 		panel.setLayout(null);
@@ -20,28 +21,28 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 	@Override
 	public String getCode() {
 		return """
-         int left = 0;
-         int right = n - 1;
-         int k = n - 1;
+				int left = 0;
+				int right = n - 1;
+				int k = n - 1;
 
-         while (left < right) {
-             for (int i = right; i > left; i--) {
-                 if (a[i] < a[i - 1]) {
-                     swap(a[i], a[i - 1]);
-                     k = i;
-                 }
-             }
-             left = k;
+				while (left < right) {
+				    for (int i = right; i > left; i--) {
+				        if (a[i] < a[i - 1]) {
+				            swap(a[i], a[i - 1]);
+				            k = i;
+				        }
+				    }
+				    left = k;
 
-             for (int j = left; j < right; j++) {
-                 if (a[j] > a[j + 1]) {
-                     swap(a[j], a[j + 1]);
-                     k = j;
-                 }
-             }
-             right = k;
-         }
-         """;
+				    for (int j = left; j < right; j++) {
+				        if (a[j] > a[j + 1]) {
+				            swap(a[j], a[j + 1]);
+				            k = j;
+				        }
+				    }
+				    right = k;
+				}
+				""";
 	}
 
 	@Override
@@ -138,6 +139,7 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 			e.printStackTrace();
 		}
 	}
+
 	@Override
 	protected void swap(int i, int j) {
 		int temp = array[i];
@@ -158,12 +160,11 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 		for (int step = 0; step <= STEPS; step++) {
 			double progress = (double) step / STEPS;
 
-			double smoothProgress = progress < 0.5
-					? 4 * progress * progress * progress
+			double smoothProgress = progress < 0.5 ? 4 * progress * progress * progress
 					: 1 - Math.pow(-2 * progress + 2, 3) / 2;
 
-			int dx = (int)((endX - startX) * smoothProgress);
-			int dy = (int)(ARC_HEIGHT * Math.sin(progress * Math.PI) - ARC_HEIGHT/2);
+			int dx = (int) ((endX - startX) * smoothProgress);
+			int dy = (int) (ARC_HEIGHT * Math.sin(progress * Math.PI) - ARC_HEIGHT / 2);
 
 			labels[i].setLocation(startX + dx, startY + dy);
 			labels[j].setLocation(endX - dx, endY - dy);
@@ -191,6 +192,7 @@ public class ShakeSortVisualizer extends AlgorithmSortVisualizer {
 		panel.revalidate();
 		panel.repaint();
 	}
+
 	public static void execute() {
 		SwingUtilities.invokeLater(() -> new ShakeSortVisualizer().setVisible(true));
 	}

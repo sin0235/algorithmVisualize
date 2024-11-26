@@ -17,7 +17,8 @@ public class MergeSortVisualizer extends AlgorithmSortVisualizer {
 	public MergeSortVisualizer() {
 		super();
 	}
-@Override
+
+	@Override
 	public String getCode() {
 		return """
 				        void merge(int[] arr, int l, int r, int m) {
@@ -113,11 +114,7 @@ public class MergeSortVisualizer extends AlgorithmSortVisualizer {
 			Thread.sleep(DELAY);
 
 			Random random = new Random();
-			Color mergedColor = new Color(
-					random.nextInt(256),
-					random.nextInt(256),
-					random.nextInt(256)
-			);
+			Color mergedColor = new Color(random.nextInt(256), random.nextInt(256), random.nextInt(256));
 
 			int i = 0, j = 0, k = left;
 
@@ -160,7 +157,6 @@ public class MergeSortVisualizer extends AlgorithmSortVisualizer {
 			e.printStackTrace();
 		}
 	}
-
 
 	private void updateLabel(int index, int value, Color color) {
 		labels[index].setText(String.valueOf(value));

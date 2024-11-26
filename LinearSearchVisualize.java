@@ -5,42 +5,41 @@ import java.awt.*;
 
 public class LinearSearchVisualize extends SearchAlgorithmsVisualize {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public LinearSearchVisualize(){
-        super();
-    }
+	public LinearSearchVisualize() {
+		super();
+	}
 
-    public void visualize(int target){
-        linearSearch(target);
-    }
+	public void visualize(int target) {
+		linearSearch(target);
+	}
 
+	private void linearSearch(int target) {
+		int n = array.length - 1;
+		array[n] = target;
+		int i = 0;
+		while (array[i] != target) {
+			labels[i].setBackground(Color.YELLOW);
+			delay();
+			i++;
+			if (array[i] == target && i < n) {
+				labels[i].setBackground(Color.GREEN);
+			}
+		}
 
-    private void linearSearch(int target) {
-        int n = array.length - 1;
-        array[n] = target;
-        int i = 0;
-        while (array[i] != target) {
-            labels[i].setBackground(Color.YELLOW);
-            delay();
-            i++;
-            if(array[i] == target && i < n){
-                labels[i].setBackground(Color.GREEN);
-            }
-        }
+		if (i < n) {
+			resultLabel.setText("Phần tử được tìm thấy ở vị trí " + i);
+		} else {
+			resultLabel.setText("Not Found");
+		}
 
-        if (i < n) {
-            resultLabel.setText("Phần tử được tìm thấy ở vị trí " + i);
-        } else {
-            resultLabel.setText("Not Found");
-        }
+	}
 
-    }
-
-    public static void execute() {
-        SwingUtilities.invokeLater(() -> new LinearSearchVisualize().setVisible(true));
-    }
+	public static void execute() {
+		SwingUtilities.invokeLater(() -> new LinearSearchVisualize().setVisible(true));
+	}
 }

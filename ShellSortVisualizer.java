@@ -30,20 +30,20 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 	@Override
 	public String getCode() {
 		return """
-          int gap = n / 2;
-          while (gap > 0) {
-              for (int i = gap; i < n; i++) {
-                  int temp = a[i];
-                  int j = i;
-                  while (j >= gap && a[j - gap] > temp) {
-                      a[j] = a[j - gap];
-                      j -= gap;
-                  }
-                  a[j] = temp;
-              }
-              gap /= 2;
-          }
-          """;
+				int gap = n / 2;
+				while (gap > 0) {
+				    for (int i = gap; i < n; i++) {
+				        int temp = a[i];
+				        int j = i;
+				        while (j >= gap && a[j - gap] > temp) {
+				            a[j] = a[j - gap];
+				            j -= gap;
+				        }
+				        a[j] = temp;
+				    }
+				    gap /= 2;
+				}
+				""";
 	}
 
 	@Override
@@ -71,8 +71,7 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 					highlightLabel(labels[j], Color.YELLOW, 200);
 
 					highlightLine(5);
-					compareLabel.setText("Compare: " + array[k] + " : " +
-							(k >= gap ? array[k - gap] : "N/A"));
+					compareLabel.setText("Compare: " + array[k] + " : " + (k >= gap ? array[k - gap] : "N/A"));
 					compareLabel.setBackground(new Color(100, 100, 255));
 
 					logArea.append("Xét phần tử: " + array[j] + " tại vị trí " + j + "\n");
@@ -139,12 +138,12 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 			label.setBackground(new Color(r, g, b));
 			panel.revalidate();
 			panel.repaint();
-            try {
-                Thread.sleep(duration / 10);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
+			try {
+				Thread.sleep(duration / 10);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	@Override
@@ -160,7 +159,7 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 		final int ARC_HEIGHT = 50;
 
 		Timer timer = new Timer(DELAY, null);
-		final int[] step = {0};
+		final int[] step = { 0 };
 
 		timer.addActionListener(e -> {
 			if (step[0] >= STEPS) {
@@ -195,10 +194,9 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 		}
 	}
 
-
 	@Override
-	protected void finalizeSwap(int i, int j, Point startPos1, Point startPos2,
-							  Dimension originalSize, Color originalColor) {
+	protected void finalizeSwap(int i, int j, Point startPos1, Point startPos2, Dimension originalSize,
+			Color originalColor) {
 		labels[i].setText(labels[j].getText());
 		labels[j].setText("");
 
@@ -212,12 +210,13 @@ public class ShellSortVisualizer extends AlgorithmSortVisualizer {
 		panel.revalidate();
 		panel.repaint();
 	}
+
 	private void resetLabelColor(JLabel label) {
 		label.setBackground(originalColor);
 	}
 
 	private int interpolateColor(int start, int end, float progress) {
-		return (int)(start + (end - start) * progress);
+		return (int) (start + (end - start) * progress);
 	}
 
 	public static void execute() {

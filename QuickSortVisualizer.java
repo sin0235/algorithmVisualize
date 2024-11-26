@@ -18,25 +18,25 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 
 	public String getCode() {
 		return """
-                 int patition(int[] array, int l, int r) {
-                       int i = l - 1;
-                       for (int j = l; j < r; j++) {
-                           if (array[j] < array[r]) {
-                               swap(array, ++i, j);
-                           }
-                       }
-                       swap(array, ++i, r);
-                       return i;
-                   }
+				       int patition(int[] array, int l, int r) {
+				             int i = l - 1;
+				             for (int j = l; j < r; j++) {
+				                 if (array[j] < array[r]) {
+				                     swap(array, ++i, j);
+				                 }
+				             }
+				             swap(array, ++i, r);
+				             return i;
+				         }
 
-                 void quickSort(int[] array, int l, int r) {
-                       if (r > l) {
-                           int flagIndex = patition(array, l, r);
-                           quickSort(array, l, flagIndex - 1);
-                           quickSort(array, flagIndex + 1, r);
-                       }
-                   }
-          """;
+				       void quickSort(int[] array, int l, int r) {
+				             if (r > l) {
+				                 int flagIndex = patition(array, l, r);
+				                 quickSort(array, l, flagIndex - 1);
+				                 quickSort(array, flagIndex + 1, r);
+				             }
+				         }
+				""";
 	}
 
 	JLabel iLabel = new JLabel("i: ", SwingConstants.CENTER);
@@ -151,6 +151,7 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 		highlightLine(8);
 		return i + 1;
 	}
+
 	@Override
 	protected void swap(int i, int j) {
 		int temp = array[i];
@@ -178,14 +179,8 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 			labels[i].setLocation(startPos1.x + dx, startPos1.y + dy);
 			labels[j].setLocation(startPos2.x - dx, startPos2.y - dy);
 
-			labels[i].setSize(
-					originalSize.width + (int)scaleProgress,
-					originalSize.height + (int)scaleProgress
-			);
-			labels[j].setSize(
-					originalSize.width - (int)scaleProgress,
-					originalSize.height - (int)scaleProgress
-			);
+			labels[i].setSize(originalSize.width + (int) scaleProgress, originalSize.height + (int) scaleProgress);
+			labels[j].setSize(originalSize.width - (int) scaleProgress, originalSize.height - (int) scaleProgress);
 
 			panel.revalidate();
 			panel.repaint();
@@ -209,6 +204,7 @@ public class QuickSortVisualizer extends AlgorithmSortVisualizer {
 		panel.revalidate();
 		panel.repaint();
 	}
+
 	public static void execute() {
 		SwingUtilities.invokeLater(() -> new QuickSortVisualizer().setVisible(true));
 	}

@@ -86,7 +86,6 @@ public class SelectionSortVisualize extends AlgorithmSortVisualizer {
 					labels[i].setBackground(originalColor);
 					labels[i].setForeground(Color.BLACK);
 
-
 					swap(i, minIndex);
 					labels[i].setBackground(originalColor);
 					panel.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 30));

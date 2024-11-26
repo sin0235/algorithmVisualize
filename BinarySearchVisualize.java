@@ -4,60 +4,60 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BinarySearchVisualize extends SearchAlgorithmsVisualize {
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public BinarySearchVisualize(){
-        super();
-    }
+	public BinarySearchVisualize() {
+		super();
+	}
 
-    public void visualize(int target){
-        binarySearch(0, labels.length - 1, target);
-    }
+	public void visualize(int target) {
+		binarySearch(0, labels.length - 1, target);
+	}
 
-    private void binarySearch(int left, int right, int target) {
-        if (left > right) {
-            resultLabel.setText("Not Found");
-            resetColor();
-            return;
-        }
+	private void binarySearch(int left, int right, int target) {
+		if (left > right) {
+			resultLabel.setText("Not Found");
+			resetColor();
+			return;
+		}
 
-        int middle = (left + right) / 2;
-        labels[middle].setBackground(Color.YELLOW);
+		int middle = (left + right) / 2;
+		labels[middle].setBackground(Color.YELLOW);
 
-        delay();
+		delay();
 
-        if (array[middle] == target) {
-            resultLabel.setText("Phần tử được tìm thấy ở vị trí " + middle);
-            labels[middle].setBackground(Color.GREEN);
-            return;
-        } else if (array[middle] < target) {
-            resetColor();
-            updateRange(middle, right, Color.CYAN);
-            binarySearch(middle + 1, right, target);
-        } else {
-            resetColor();
-            updateRange(left, middle, Color.CYAN);
-            binarySearch(left, middle - 1, target);
-        }
-    }
+		if (array[middle] == target) {
+			resultLabel.setText("Phần tử được tìm thấy ở vị trí " + middle);
+			labels[middle].setBackground(Color.GREEN);
+			return;
+		} else if (array[middle] < target) {
+			resetColor();
+			updateRange(middle, right, Color.CYAN);
+			binarySearch(middle + 1, right, target);
+		} else {
+			resetColor();
+			updateRange(left, middle, Color.CYAN);
+			binarySearch(left, middle - 1, target);
+		}
+	}
 
-    private void resetColor() {
-        for (JLabel label : labels) {
-            label.setBackground(Color.white);
-        }
-    }
+	private void resetColor() {
+		for (JLabel label : labels) {
+			label.setBackground(Color.white);
+		}
+	}
 
-    private void updateRange(int from, int to, Color color) {
-        for (int i = from; i <= to; i++) {
-            labels[i].setBackground(color);
-        }
-        delay();
-    }
+	private void updateRange(int from, int to, Color color) {
+		for (int i = from; i <= to; i++) {
+			labels[i].setBackground(color);
+		}
+		delay();
+	}
 
-    public static void execute() {
-        SwingUtilities.invokeLater(() -> new BinarySearchVisualize().setVisible(true));
-    }
+	public static void execute() {
+		SwingUtilities.invokeLater(() -> new BinarySearchVisualize().setVisible(true));
+	}
 }

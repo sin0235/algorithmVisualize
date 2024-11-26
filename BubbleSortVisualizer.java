@@ -1,13 +1,8 @@
 package algorithmVisualize;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import java.awt.Rectangle;
 import javax.swing.*;
-import javax.swing.text.*;
+import java.awt.FlowLayout;
 
 public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 
@@ -21,17 +16,17 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 	@Override
 	public String getCode() {
 		return """
-                for (int i = 0; i < array.length - 1; i++) {
-                    for (int j = 0; j < array.length - i - 1; j++) {
-                        if (array[j] > array[j + 1]) {
-                            // Swap array[j] and array[j + 1]
-                            int temp = array[j];
-                            array[j] = array[j + 1];
-                            array[j + 1] = temp;
-                        }
-                    }
-                }
-                """;
+				for (int i = 0; i < array.length - 1; i++) {
+				    for (int j = 0; j < array.length - i - 1; j++) {
+				        if (array[j] > array[j + 1]) {
+				            // Swap array[j] and array[j + 1]
+				            int temp = array[j];
+				            array[j] = array[j + 1];
+				            array[j + 1] = temp;
+				        }
+				    }
+				}
+				""";
 	}
 
 	@Override
@@ -55,9 +50,9 @@ public class BubbleSortVisualizer extends AlgorithmSortVisualizer {
 						panel.setLayout(null);
 
 						highlightLine(5);
-						Thread.sleep(DELAY/2);
+						Thread.sleep(DELAY / 2);
 						highlightLine(6);
-						Thread.sleep(DELAY/2);
+						Thread.sleep(DELAY / 2);
 						highlightLine(7);
 
 						swap(j, j + 1);

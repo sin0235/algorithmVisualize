@@ -10,32 +10,30 @@ public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
 	public BinaryInsertionSortVisualizer() {
 		super();
 
-
 	}
 
 	public String getCode() {
 		return """
-             int len = arr.length;
-             for (int i = 1; i < len; i++) {
-                 int tmp = arr[i];
-                 int left = 0;
-                 int right = i - 1;
-                 while (left <= right) {
-                     int mid = (right + left) / 2;
-                     if (arr[mid] > tmp) {
-                         right = mid - 1;
-                     } else {
-                         left = mid + 1;
-                     }
-                 }
-                 for (int j = i - 1; j >= left; j--) {
-                     arr[j + 1] = arr[j];
-                 }
-                 arr[left] = tmp;
-             }
-             """;
+				int len = arr.length;
+				for (int i = 1; i < len; i++) {
+				    int tmp = arr[i];
+				    int left = 0;
+				    int right = i - 1;
+				    while (left <= right) {
+				        int mid = (right + left) / 2;
+				        if (arr[mid] > tmp) {
+				            right = mid - 1;
+				        } else {
+				            left = mid + 1;
+				        }
+				    }
+				    for (int j = i - 1; j >= left; j--) {
+				        arr[j + 1] = arr[j];
+				    }
+				    arr[left] = tmp;
+				}
+				""";
 	}
-
 
 	public void visualize() {
 		int len = array.length;
@@ -87,7 +85,7 @@ public class BinaryInsertionSortVisualizer extends AlgorithmSortVisualizer {
 				labels[left].setText(String.valueOf(temp));
 				Thread.sleep(500);
 
-				for(int ii = 0; ii <= left; ii++) {
+				for (int ii = 0; ii <= left; ii++) {
 					labels[i].setBackground(originalColor);
 				}
 			}
